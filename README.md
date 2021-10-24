@@ -24,7 +24,7 @@ The preferred way to install this package is through devtools:
 devtools::install_github("dosc91/mtqgam", upgrade_dependencies = FALSE)
 ```
 
-You will be asked to update dependencies during installation; usually, updates can be skipped. Once installation was successfull, there will be a warning message on the usage of '...'; this can be ignored.
+You will be asked to update dependencies during installation; usually, updates can be skipped. Once installation was successfull, there will be a warning message on the usage of `...`; this can be ignored.
 
 # Overview
 
