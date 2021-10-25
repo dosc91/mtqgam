@@ -43,4 +43,4 @@ Please see the references section of the [vignette](http://htmlpreview.github.io
 
 Please cite the package as follows:
 
-Schmitz, Dominic. (2021). mtqgam: Mouse-Tracking Data in QGAMs. R package version 0.1. URL: https://github.com/dosc91/mtqgam
+Schmitz, Dominic. (2021). mtqgam: Mouse-Tracking Data in QGAMs. R package version 0.2.1. URL: https://github.com/dosc91/mtqgam
