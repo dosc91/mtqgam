@@ -26,6 +26,8 @@ devtools::install_github("dosc91/mtqgam", upgrade_dependencies = FALSE)
 
 You will be asked to update dependencies during installation; usually, updates can be skipped. Once installation was successfull, there will be a warning message on the usage of `...`; this can be ignored.
 
+Please note that in order to use the plot functions of `mtqgam` you must load `ggplot2` via `library(ggplot2)` first.
+
 # Overview
 
 This is a full list of all functions currently contained in `mtqgam`
