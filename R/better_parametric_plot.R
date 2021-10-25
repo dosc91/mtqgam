@@ -6,6 +6,7 @@
 #' @usage better_parametric_plot(
 #'   qgam,
 #'   pred,
+#'   cond,
 #'   print.summary,
 #'   plot.old,
 #'   size,
@@ -15,6 +16,7 @@
 #'
 #' @param qgam A qgam object, created with \code{qgam} or extracted from a \code{mqgam} object.
 #' @param pred A named list of the levels to use for the predictor terms to plot (same as those specified for \code{plot_parametric}).
+#' @param cond A named list of the values to use for the other predictor terms (not in view). Used for choosing between smooths that share the same view predictors.
 #' @param print.summary Logical: whether or not to print summary.
 #' @param plot.old Plot the original \code{plot_parametric} as well.
 #' @param size Size argument for the ggplot object; specifies the size of points and lines.
@@ -42,15 +44,19 @@
 #'   theme_classic() +
 #'   labs(subtitle = "You can basically add all ggplot functions and arguments you are familiar with.")
 #'
-#' @export
+#' # interactions
+#' CB <- plot_parametric(tmp.x.1a, pred = list(responseType = c("complex", "monomorphemic")), cond = list(spliceType = c("CB")), print.summary = F, main = "X 0.1 CB", color = mycolors)
+#' BB <- plot_parametric(tmp.x.1b, pred = list(responseType = c("complex", "monomorphemic")), cond = list(spliceType = c("BB")), print.summary = F, main = "X 0.1 BB", color = mycolors)
+#'
+#'  @export
 
-better_parametric_plot <- function(qgam, pred, print.summary = F, plot.old = F, order = NULL, size = 0.5, color = NULL, alpha = 1){
+better_parametric_plot <- function(qgam, pred, cond = NULL, print.summary = F, plot.old = F, order = NULL, size = 0.5, color = NULL, alpha = 1){
 
   if(plot.old == T){
-    parametric_plot <- plot_parametric(qgam, pred=pred, print.summary=print.summary)
+    parametric_plot <- itsadug::plot_parametric(qgam, pred=pred, cond=cond, print.summary=print.summary)
   } else {
     R.devices::suppressGraphics({
-      parametric_plot <- plot_parametric(qgam, pred=pred, print.summary=print.summary)
+      parametric_plot <- itsadug::plot_parametric(qgam, pred=pred, cond=cond, print.summary=print.summary)
     })}
 
   fit <- parametric_plot$fv$fit
@@ -67,6 +73,8 @@ better_parametric_plot <- function(qgam, pred, print.summary = F, plot.old = F, 
 
   name <- names(pred)
 
+  subtitle <- parametric_plot$fv[1,1]
+
   if(is.null(order)){
     data <- data
   } else if (!is.null(order)){
@@ -79,13 +87,31 @@ better_parametric_plot <- function(qgam, pred, print.summary = F, plot.old = F, 
     color <- color
   }
 
-  newplot <- ggplot2::ggplot(data = data) +
-    geom_pointrange(aes(x = fit, y = levels, xmin = fit - CI, xmax = fit + CI), size = size, color = color, alpha = alpha) +
-    labs(title = name) +
-    theme_bw() +
-    theme(plot.title = element_text(hjust = 0.5),
-          legend.position = "none") +
-    scale_color_manual(values=c("black", "black"))
+
+  if(is.null(cond)){
+
+    newplot <- ggplot2::ggplot(data = data) +
+      geom_pointrange(aes(x = fit, y = levels, xmin = fit - CI, xmax = fit + CI), size = size, color = color, alpha = alpha) +
+      labs(title = name) +
+      theme_bw() +
+      theme(plot.title = element_text(hjust = 0.5),
+            plot.subtitle = element_text(hjust = 0.5),
+            legend.position = "none") +
+      scale_color_manual(values=c("black", "black"))
+
+  }else{
+
+    newplot <- ggplot2::ggplot(data = data) +
+      geom_pointrange(aes(x = fit, y = levels, xmin = fit - CI, xmax = fit + CI), size = size, color = color, alpha = alpha) +
+      labs(title = name,
+           subtitle = subtitle) +
+      theme_bw() +
+      theme(plot.title = element_text(hjust = 0.5),
+            plot.subtitle = element_text(hjust = 0.5),
+            legend.position = "none") +
+      scale_color_manual(values=c("black", "black"))
+
+  }
 
   if(is.null(order)){
     cli::cli_alert_info(glue::glue("Plotting with default order of predictor levels."))
