@@ -1,6 +1,6 @@
 ---
 title: "Functions"
-date: "Version 0.1 - October 2021"
+date: "Version 0.2 - October 2021"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Functions}
@@ -68,30 +68,30 @@ Note: Due to size reasons, no exemplary data set is included in this package.
 
 The `better_parametric_plot` function creates a point-range plot for the specified parametric predictor term. It basically is a wrapper for `itsadug`'s `plot_parametric` function, adding the variability and flexibility of `ggplot2` objects.
 
-The functions requires the output of a `plot_parametric` call as well as the `pred` argument given for that call.
+The functions requires a QGAM model fitted with `qgam::qgam` or `qgam:mqgam` as well as the `pred` argument given for such a call.
 
 ```{r fig.align='center'}
 # create an 'old' parametric plot
-old.plot <- plot_parametric(tmp.x.1, pred=list(Condition=c("matched", "mismatched")), print.summary=F)
+old.plot <- plot_parametric(tmp.x.1, pred = list(Condition = c("matched", "mismatched")), print.summary=F)
 ```
 
 
 ```{r fig.align='center'}
 # create a better parametric plot using the 'old' plot
-better_parametric_plot(parametric_plot = old.plot, pred=list(Condition=c("matched", "mismatched")))
+better_parametric_plot(qgam = tmp.x.1, pred = list(Condition = c("matched", "mismatched")))
 ```
 
 You can change the order of the predictor levels displayed on the y axis:
 
 ```{r fig.align='center'}
-better_parametric_plot(parametric_plot = old.plot, pred=list(Condition=c("matched", "mismatched")),
+better_parametric_plot(qgam = tmp.x.1, pred = list(Condition = c("matched", "mismatched")),
                        order = c("mismatched", "matched"))
 ```
 
 Plots created with `better_parametric_plot` can be modified using common `ggplot2` functions:
 
 ```{r fig.align='center'}
-better_parametric_plot(parametric_plot = old.plot, pred=list(Condition=c("matched", "mismatched")),
+better_parametric_plot(qgam = tmp.x.1, pred = list(Condition = c("matched", "mismatched")),
                        color = c("purple", "blue")) +
                        theme_classic() +
                        labs(subtitle = "This is a subtitle")
@@ -104,6 +104,11 @@ better_parametric_plot(parametric_plot = old.plot, pred=list(Condition=c("matche
 The `better_smooth_plot` function creates a line plot for the specified parametric predictor term. It basically is a wrapper of the base R `plot` function used for the visualisation of GAMs, adding the variability and flexibility of `ggplot2` objects.
 
 The functions requires a QGAM model fitted with `qgam::qgam` or `qgam:mqgam` as well as the `smooth_term` that is to be plotted.
+
+```{r fig.align='center'}
+# create an 'old' smooth plot
+old.plot <- plot(tmp.x.1, select = 1)
+```
 
 ```{r fig.align='center'}
 # create a better smooth plot
