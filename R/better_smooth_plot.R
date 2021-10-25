@@ -12,6 +12,7 @@
 #'
 #' @param qgam A qgam object, created with \code{qgam} or extracted from a \code{mqgam} object.
 #' @param smooth_term The smooth term you wish to plot. Must be one of the smooth terms given in the qgam formula.
+#' @param plot.old Plot the original \code{plot} as well.
 #' @param size Size argument for the ggplot object; specifies the size of the line.
 #' @param fill Color argument for the ggplot object; specifies the color of the confidence interval.
 #' @param alpha Alpha argument for the ggplot object; specifies the transparency of the confidence interval.
@@ -26,22 +27,24 @@
 #'
 #' @examples
 #' better_smooth_plot(qgam = tmp.x.3,
-#' smooth_term = "Age")
+#'   smooth_term = "Age")
 #'
 #' better_smooth_plot(qgam = tmp.x.3,
-#' smooth_term = "Age",
-#' size = 1,
-#' fill = "purple",
-#' alpha = 0.5,
-#' color = "darkgreen") +
-#' labs(subtitle = "You can basically add all ggplot functions and arguments you are familiar with.")
+#'   smooth_term = "Age",
+#'   size = 1,
+#'   fill = "purple",
+#'   alpha = 0.5,
+#'   color = "darkgreen") +
+#'   labs(subtitle = "You can basically add all ggplot functions and arguments you are familiar with.")
 #'
 #' @export
 
-better_smooth_plot <- function(qgam, smooth_term, size = 0.5, fill = "steelblue2", alpha = 1, color = "black"){
+better_smooth_plot <- function(qgam, smooth_term, plot.old = F, size = 0.5, fill = "steelblue2", alpha = 1, color = "black"){
 
-  bad_plot <- plot(qgam,
-                   select=1)
+  R.devices::suppressGraphics({
+    bad_plot <- plot(qgam,
+                     select=1)
+  })
 
   smooth_terms <- data.frame(matrix(ncol = 1, nrow = 1))
 
@@ -52,6 +55,11 @@ better_smooth_plot <- function(qgam, smooth_term, size = 0.5, fill = "steelblue2
   }
 
   number <- which(smooth_terms == smooth_term, arr.ind=TRUE)[1]
+
+  if(plot.old == T){
+    bad_plot <- plot(qgam,
+                     select=number)
+  }
 
   if(is.na(number)){
     cli::cli_alert_danger(glue::glue("Unknown smooth_term specified. Please specify a smooth_term used in your qgam."))

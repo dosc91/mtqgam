@@ -4,15 +4,19 @@
 #' \code{plot_parametric} function.
 #'
 #' @usage better_parametric_plot(
-#'   parametric_plot,
+#'   qgam,
 #'   pred,
+#'   print.summary,
+#'   plot.old,
 #'   size,
 #'   color,
 #'   alpha,
 #'   order)
 #'
-#' @param parametric_plot A plot object, created with \code{plot_parametric}.
+#' @param qgam A qgam object, created with \code{qgam} or extracted from a \code{mqgam} object.
 #' @param pred A named list of the levels to use for the predictor terms to plot (same as those specified for \code{plot_parametric}).
+#' @param print.summary Logical: whether or not to print summary.
+#' @param plot.old Plot the original \code{plot_parametric} as well.
 #' @param size Size argument for the ggplot object; specifies the size of points and lines.
 #' @param color Color argument for the ggplot object; specifies the color of points and lines.
 #' @param alpha Alpha argument for the ggplot object; specifies the transparency of points and lines.
@@ -26,21 +30,28 @@
 #' @references Wickham, H. (2016). ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York.
 #'
 #' @examples
-#' better_parametric_plot(parametric_plot = plot,
-#' pred = list(Condition=c("matched", "mismatched")),
-#' size = 2,
-#' color = c("red", "green"),
-#' alpha = 0.2,
-#' order = c("mismatched", "matched"))
+#' better_parametric_plot(qgam = tmp.x.1,
+#'   pred = list(Condition = c("matched", "mismatched")),
+#'   size = 2,
+#'   color = c("red", "green"),
+#'   alpha = 0.2,
+#'   order = c("mismatched", "matched"))
 #'
-#' better_parametric_plot(parametric_plot = plot,
-#' pred = list(Condition=c("matched", "mismatched"))) +
-#' theme_classic() +
-#' labs(subtitle = "You can basically add all ggplot functions and arguments you are familiar with.")
+#' better_parametric_plot(qgam = tmp.x.1,
+#'   pred = list(Condition = c("matched", "mismatched"))) +
+#'   theme_classic() +
+#'   labs(subtitle = "You can basically add all ggplot functions and arguments you are familiar with.")
 #'
 #' @export
 
-better_parametric_plot <- function(parametric_plot, pred, order = NULL, size = 0.5, color = NULL, alpha = 1){
+better_parametric_plot <- function(qgam, pred, print.summary = F, plot.old = F, order = NULL, size = 0.5, color = NULL, alpha = 1){
+
+  if(plot.old == T){
+    parametric_plot <- plot_parametric(qgam, pred=pred, print.summary=print.summary)
+  } else {
+    R.devices::suppressGraphics({
+      parametric_plot <- plot_parametric(qgam, pred=pred, print.summary=print.summary)
+    })}
 
   fit <- parametric_plot$fv$fit
 
