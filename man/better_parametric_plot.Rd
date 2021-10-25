@@ -7,6 +7,7 @@
 better_parametric_plot(
   qgam,
   pred,
+  cond,
   print.summary,
   plot.old,
   size,
@@ -18,6 +19,8 @@ better_parametric_plot(
 \item{qgam}{A qgam object, created with \code{qgam} or extracted from a \code{mqgam} object.}
 
 \item{pred}{A named list of the levels to use for the predictor terms to plot (same as those specified for \code{plot_parametric}).}
+
+\item{cond}{A named list of the values to use for the other predictor terms (not in view). Used for choosing between smooths that share the same view predictors.}
 
 \item{print.summary}{Logical: whether or not to print summary.}
 
@@ -51,6 +54,11 @@ better_parametric_plot(qgam = tmp.x.1,
   theme_classic() +
   labs(subtitle = "You can basically add all ggplot functions and arguments you are familiar with.")
 
+# interactions
+CB <- plot_parametric(tmp.x.1a, pred = list(responseType = c("complex", "monomorphemic")), cond = list(spliceType = c("CB")), print.summary = F, main = "X 0.1 CB", color = mycolors)
+BB <- plot_parametric(tmp.x.1b, pred = list(responseType = c("complex", "monomorphemic")), cond = list(spliceType = c("BB")), print.summary = F, main = "X 0.1 BB", color = mycolors)
+
+ @export
 }
 \references{
 van Rij J, Wieling M, Baayen R, & van Rijn H (2020). itsadug: Interpreting Time Series and Autocorrelated Data Using GAMMs. R package version 2.4.
