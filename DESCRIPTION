@@ -18,6 +18,7 @@ Imports:
     ggplot2,
     glue,
     qgam,
+    R.devices,
     tidyr
 Suggests: 
     rmarkdown,
