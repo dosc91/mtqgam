@@ -87,8 +87,7 @@ better_parametric_plot <- function(qgam, pred, cond = NULL, print.summary = F, p
 
     newplot <- ggplot2::ggplot(data = data) +
       geom_pointrange(aes(x = fit, y = levels, xmin = fit - CI, xmax = fit + CI), size = size, color = color, alpha = alpha) +
-      labs(title = name,
-           subtitle = subtitle) +
+      labs(title = name) +
       theme_bw() +
       theme(plot.title = element_text(hjust = 0.5),
             plot.subtitle = element_text(hjust = 0.5),
