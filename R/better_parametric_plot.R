@@ -73,8 +73,6 @@ better_parametric_plot <- function(qgam, pred, cond = NULL, print.summary = F, p
 
   name <- names(pred)
 
-  subtitle <- parametric_plot$fv[1,1]
-
   if(is.null(order)){
     data <- data
   } else if (!is.null(order)){
@@ -87,20 +85,6 @@ better_parametric_plot <- function(qgam, pred, cond = NULL, print.summary = F, p
     color <- color
   }
 
-
-  if(is.null(cond)){
-
-    newplot <- ggplot2::ggplot(data = data) +
-      geom_pointrange(aes(x = fit, y = levels, xmin = fit - CI, xmax = fit + CI), size = size, color = color, alpha = alpha) +
-      labs(title = name) +
-      theme_bw() +
-      theme(plot.title = element_text(hjust = 0.5),
-            plot.subtitle = element_text(hjust = 0.5),
-            legend.position = "none") +
-      scale_color_manual(values=c("black", "black"))
-
-  }else{
-
     newplot <- ggplot2::ggplot(data = data) +
       geom_pointrange(aes(x = fit, y = levels, xmin = fit - CI, xmax = fit + CI), size = size, color = color, alpha = alpha) +
       labs(title = name,
@@ -111,7 +95,6 @@ better_parametric_plot <- function(qgam, pred, cond = NULL, print.summary = F, p
             legend.position = "none") +
       scale_color_manual(values=c("black", "black"))
 
-  }
 
   if(is.null(order)){
     cli::cli_alert_info(glue::glue("Plotting with default order of predictor levels."))
