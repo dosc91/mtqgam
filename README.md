@@ -1,7 +1,7 @@
 # mtqgam <img src='https://dominicschmitz.com/packages/mtqgam_logo2.png' align="right" height="138" />
 
 <!-- badges: start -->
-![](https://img.shields.io/badge/version-0.2-FFA70B.svg)
+![](https://img.shields.io/badge/version-0.2.1-FFA70B.svg)
 ![](https://img.shields.io/github/last-commit/dosc91/mtqgam)
 <!-- badges: end -->
 
