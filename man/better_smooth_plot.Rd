@@ -17,6 +17,8 @@ better_parametric_plot(
 
 \item{smooth_term}{The smooth term you wish to plot. Must be one of the smooth terms given in the qgam formula.}
 
+\item{plot.old}{Plot the original \code{plot} as well.}
+
 \item{size}{Size argument for the ggplot object; specifies the size of the line.}
 
 \item{fill}{Color argument for the ggplot object; specifies the color of the confidence interval.}
@@ -33,15 +35,15 @@ A ggplot object.
 }
 \examples{
 better_smooth_plot(qgam = tmp.x.3,
-smooth_term = "Age")
+  smooth_term = "Age")
 
 better_smooth_plot(qgam = tmp.x.3,
-smooth_term = "Age",
-size = 1,
-fill = "purple",
-alpha = 0.5,
-color = "darkgreen") +
-labs(subtitle = "You can basically add all ggplot functions and arguments you are familiar with.")
+  smooth_term = "Age",
+  size = 1,
+  fill = "purple",
+  alpha = 0.5,
+  color = "darkgreen") +
+  labs(subtitle = "You can basically add all ggplot functions and arguments you are familiar with.")
 
 }
 \references{

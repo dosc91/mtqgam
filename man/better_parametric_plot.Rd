@@ -5,17 +5,23 @@
 \title{Plot better plots of parametric predictors in QGAMs}
 \usage{
 better_parametric_plot(
-  parametric_plot,
+  qgam,
   pred,
+  print.summary,
+  plot.old,
   size,
   color,
   alpha,
   order)
 }
 \arguments{
-\item{parametric_plot}{A plot object, created with \code{plot_parametric}.}
+\item{qgam}{A qgam object, created with \code{qgam} or extracted from a \code{mqgam} object.}
 
 \item{pred}{A named list of the levels to use for the predictor terms to plot (same as those specified for \code{plot_parametric}).}
+
+\item{print.summary}{Logical: whether or not to print summary.}
+
+\item{plot.old}{Plot the original \code{plot_parametric} as well.}
 
 \item{order}{Specify the order with which the levels given in \code{pred} should be plotted.}
 
@@ -33,17 +39,17 @@ A ggplot object.
 \code{plot_parametric} function.
 }
 \examples{
-better_parametric_plot(parametric_plot = plot,
-pred = list(Condition=c("matched", "mismatched")),
-size = 2,
-color = c("red", "green"),
-alpha = 0.2,
-order = c("mismatched", "matched"))
+better_parametric_plot(qgam = tmp.x.1,
+  pred = list(Condition = c("matched", "mismatched")),
+  size = 2,
+  color = c("red", "green"),
+  alpha = 0.2,
+  order = c("mismatched", "matched"))
 
-better_parametric_plot(parametric_plot = plot,
-pred = list(Condition=c("matched", "mismatched"))) +
-theme_classic() +
-labs(subtitle = "You can basically add all ggplot functions and arguments you are familiar with.")
+better_parametric_plot(qgam = tmp.x.1,
+  pred = list(Condition = c("matched", "mismatched"))) +
+  theme_classic() +
+  labs(subtitle = "You can basically add all ggplot functions and arguments you are familiar with.")
 
 }
 \references{
