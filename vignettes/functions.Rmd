@@ -1,6 +1,6 @@
 ---
 title: "Functions"
-date: "Version 0.2 - October 2021"
+date: "Version 0.3 - October 2021"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Functions}
@@ -59,6 +59,8 @@ This is a full list of all functions currently contained in `SfL`:
 - [better_smooth_plot](#better_smooth_plot)
 - [extract_x](#extract_x)
 - [extract_y](#extract_y)
+- [facet_parametric_plot](#facet_parametric_plot)
+- [facet_smooth_plot](#facet_smooth_plot)
 
 Note: Due to size reasons, no exemplary data set is included in this package.
 
@@ -68,30 +70,43 @@ Note: Due to size reasons, no exemplary data set is included in this package.
 
 The `better_parametric_plot` function creates a point-range plot for the specified parametric predictor term. It basically is a wrapper for `itsadug`'s `plot_parametric` function, adding the variability and flexibility of `ggplot2` objects.
 
-The functions requires a QGAM model fitted with `qgam::qgam` or `qgam:mqgam` as well as the `pred` argument given for such a call.
+The functions requires a QGAM model. The QGAM model can either be the output of `qgam::qgam`, the output of `qgam::mqgam`, or a single QGAM model extracted from a `qgam::mqgam` object. Specify the quantile you wish to plot when using the output of `qgam::mqgam`. In all cases, the `pred` argument is required. This is the parametric effect you wish to plot.
+
+## An 'Old' Parametric Plot
 
 ```{r fig.align='center'}
-# create an 'old' parametric plot
-old.plot <- plot_parametric(tmp.x.1, pred = list(Condition = c("matched", "mismatched")), print.summary=F)
+old.plot <- plot_parametric(tmp.x.1, 
+                            pred = list(Condition = c("matched", "mismatched")), 
+                            print.summary=F)
 ```
 
+## A Better Parametric Plot
+
+### using a single QGAM extracted from a `qgam::mqgam` object OR created using `qgam::qgam`
 
 ```{r fig.align='center'}
-# create a better parametric plot using the 'old' plot
-better_parametric_plot(qgam = tmp.x.1, pred = list(Condition = c("matched", "mismatched")))
+better_parametric_plot(qgam = tmp.x.1, pred = "Condition")
 ```
+
+### using a the output of `qgam::mqgam`
+
+```{r fig.align='center'}
+better_parametric_plot(qgam = qgams_x, quantile = 0.5, pred = "Condition")
+```
+
+### Modifications
 
 You can change the order of the predictor levels displayed on the y axis:
 
 ```{r fig.align='center'}
-better_parametric_plot(qgam = tmp.x.1, pred = list(Condition = c("matched", "mismatched")),
+better_parametric_plot(qgam = tmp.x.1, pred = "Condition",
                        order = c("mismatched", "matched"))
 ```
 
 Plots created with `better_parametric_plot` can be modified using common `ggplot2` functions:
 
 ```{r fig.align='center'}
-better_parametric_plot(qgam = tmp.x.1, pred = list(Condition = c("matched", "mismatched")),
+better_parametric_plot(qgam = tmp.x.1, pred = "Condition",
                        color = c("purple", "blue")) +
                        theme_classic() +
                        labs(subtitle = "This is a subtitle")
@@ -103,30 +118,45 @@ better_parametric_plot(qgam = tmp.x.1, pred = list(Condition = c("matched", "mis
 
 The `better_smooth_plot` function creates a line plot for the specified parametric predictor term. It basically is a wrapper of the base R `plot` function used for the visualisation of GAMs, adding the variability and flexibility of `ggplot2` objects.
 
-The functions requires a QGAM model fitted with `qgam::qgam` or `qgam:mqgam` as well as the `smooth_term` that is to be plotted.
+The functions requires a QGAM model. The QGAM model can either be the output of `qgam::qgam`, the output of `qgam::mqgam`, or a single QGAM model extracted from a `qgam::mqgam` object. Specify the quantile you wish to plot when using the output of `qgam::mqgam`. In all cases, the `pred` argument is required. This is the smooth you wish to plot. 
+
+Note: In previous versions, `smooth_term` was specified instead of `pred` instead. This argument is now obsolete. Please use `pred` instead.
+
+## An 'Old' Smooth Plot
 
 ```{r fig.align='center'}
-# create an 'old' smooth plot
-old.plot <- plot(tmp.x.1, select = 1)
+old.plot <- plot(tmp.x.1, 
+                 select = 6)
 ```
 
+## A Better Smooth Plot
+
+### using a single QGAM extracted from a `qgam::mqgam` object OR created using `qgam::qgam`
+
 ```{r fig.align='center'}
-# create a better smooth plot
-better_smooth_plot(qgam = tmp.x.1, smooth_term = "order")
+better_smooth_plot(qgam = tmp.x.1, pred = "PIT")
 ```
+
+### using a the output of `qgam::mqgam`
+
+```{r fig.align='center'}
+better_smooth_plot(qgam = qgams_x, quantile = 0.5, pred = "PIT")
+```
+
+### Modifications
 
 Plots created with `better_smooth_plot` can be modified using common `ggplot2` functions:
 
 ```{r fig.align='center'}
-better_smooth_plot(qgam = tmp.x.1, smooth_term = "order",
+better_smooth_plot(qgam = tmp.x.1, pred = "PIT",
                    fill = "purple") +
                    theme_classic() +
-                   labs(title = "This is a title")
+                   labs(subtitle = "This is a subtitle")
 ```
 
 ---
 
-# Extract x Coordinates
+# Extract x Coordinates {#extract_x}
 
 The `extract_x` extracts the x coordinates from a time-normalized `mousetrap` object.
 
@@ -147,7 +177,7 @@ timestamps = 138)
 
 ---
 
-# Extract y Coordinates
+# Extract y Coordinates {#extract_y}
 
 The `extract_y` extracts the y coordinates from a time-normalized `mousetrap` object.
 
@@ -164,6 +194,82 @@ tn_tracks$ID <- mt_data$data$ID
 extract_x(tn_data = tn_tracks,
 ID_column = tn_tracks$ID,
 timestamps = 138)
+```
+
+---
+
+# Multi-Panel Parametric Plots {#facet_parametric_plot}
+
+The `facet_parametric_plot` function creates a multi-panel plot of `better_parametric_plots`.
+
+The functions requires a collection of QGAM models. The QGAM models should be the output of `qgam::mqgam`. Additionally, the `pred` argument is required. This is the parametric effect you wish to plot. 
+
+## A Multi-Panel Parametric Plot
+
+```{r fig.align='center', fig.height=8}
+facet_parametric_plot(qgam = qgams_x, pred = "Condition")
+```
+
+## Modifications
+
+Plots created with `facet_parametric_plot` have standard colors for levels of the `pred` argument. These, of course, can be changed:
+
+```{r fig.align='center', fig.height=8}
+facet_parametric_plot(qgam = qgams_x, pred = "Condition",
+                      color = c("purple", "green"))
+```
+
+Plots created with `facet_parametric_plot` can be modified using common `ggplot2` functions:
+
+```{r fig.align='center', fig.height=8}
+facet_parametric_plot(qgam = qgams_x, pred = "Condition") +
+                   theme_classic() +
+                   theme(strip.background = element_rect(fill = "steelblue2"))
+```
+
+Plots created with `facet_parametric_plot` use a free scale, i.e. the scale of the axes of the individual facets is adapted to the range of its values.  This can be changed by specifying the `scale` argument:
+
+```{r fig.align='center', fig.height=8}
+facet_parametric_plot(qgam = qgams_x, pred = "Condition",
+                      scale = "fixed")
+```
+
+---
+
+# Multi-Panel Smooth Plots {#facet_smooth_plot}
+
+The `facet_smooth_plot` function creates a multi-panel plot of `better_smooth_plots`.
+
+The functions requires a collection of QGAM models. The QGAM models should be the output of `qgam::mqgam`. Additionally, the `pred` argument is required. This is the smooth you wish to plot. 
+
+## A Multi-Panel Parametric Plot
+
+```{r fig.align='center', fig.height=8}
+facet_smooth_plot(qgam = qgams_x, pred = "PIT")
+```
+
+## Modifications
+
+Plots created with `facet_smooth_plot` have a standard color for the confidence interval of the `pred` argument. This color, of course, can be changed:
+
+```{r fig.align='center', fig.height=8}
+facet_smooth_plot(qgam = qgams_x, pred = "PIT",
+                      fill = "purple")
+```
+
+Plots created with `facet_smooth_plot` can be modified using common `ggplot2` functions:
+
+```{r fig.align='center', fig.height=8}
+facet_smooth_plot(qgam = qgams_x, pred = "PIT") +
+                   theme_classic() +
+                   theme(strip.background = element_rect(fill = "steelblue2"))
+```
+
+Plots created with `facet_smooth_plot` use a free scale, i.e. the scale of the axes of the individual facets is adapted to the range of its values.  This can be changed by specifying the `scale` argument:
+
+```{r fig.align='center', fig.height=8}
+facet_smooth_plot(qgam = qgams_x, pred = "PIT",
+                      scale = "fixed")
 ```
 
 ---
