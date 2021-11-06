@@ -6,18 +6,30 @@
 \usage{
 better_parametric_plot(
   qgam,
-  smooth_term,
-  size,
-  fill,
-  alpha,
-  color)
+  quantile = NULL,
+  pred,
+  plot.old = FALSE,
+  xlab = NULL,
+  ylab = "fit",
+  size = 0.5,
+  fill = "steelblue2",
+  color = "black",
+  alpha = 1)
 }
 \arguments{
-\item{qgam}{A qgam object, created with \code{qgam} or extracted from a \code{mqgam} object.}
+\item{qgam}{A qgam object created with \code{qgam::qgam} or extracted from a \code{qgam::mqgam} object, or a collection of qgams created with \code{qgam::mqgam}.}
 
-\item{smooth_term}{The smooth term you wish to plot. Must be one of the smooth terms given in the qgam formula.}
+\item{quantile}{If \code{qgam} is a collection of qgam models, specify the quantile you are interested in. Not meaningful for single qgam objects.}
+
+\item{pred}{The smooth term you wish to plot. Must be one of the smooth terms given in the qgam formula.}
+
+\item{smooth_term}{\emph{obsolete}: Use \code{pred} instead.}
 
 \item{plot.old}{Plot the original \code{plot} as well.}
+
+\item{xlab}{The x-axis label.}
+
+\item{ylab}{The y-axis label.}
 
 \item{size}{Size argument for the ggplot object; specifies the size of the line.}
 
@@ -34,16 +46,21 @@ A ggplot object.
 \code{better_smooth_plot} creates a smooth plot with confidence intervals using \code{ggplot2}. It basically is a wrapper for the base \code{plot} function.
 }
 \examples{
-better_smooth_plot(qgam = tmp.x.3,
-  smooth_term = "Age")
 
-better_smooth_plot(qgam = tmp.x.3,
-  smooth_term = "Age",
-  size = 1,
-  fill = "purple",
-  alpha = 0.5,
-  color = "darkgreen") +
-  labs(subtitle = "You can basically add all ggplot functions and arguments you are familiar with.")
+# using a single qgam extracted from an mqgam object OR fitted with qgam::qgam
+better_smooth_plot(qgam = tmp.x.1,
+  pred = "PIT")
+
+# using a qgam that is part of an mqgam object
+better_smooth_plot(qgam = x.qgams,
+  quantile = 0.5,
+  pred = "PIT")
+
+# combining better_smooth_plot with ggplot2
+better_smooth_plot(qgam = tmp.x.1,
+  pred = "PIT") +
+  theme_void() +
+  labs(subtitle = "This is a subtitle")
 
 }
 \references{
