@@ -1,6 +1,6 @@
 ---
 title: "Functions"
-date: "Version 0.3 - October 2021"
+date: "Version 0.3 - November 2021"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Functions}
