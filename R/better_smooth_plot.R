@@ -4,19 +4,27 @@
 #'
 #' @usage better_parametric_plot(
 #'   qgam,
-#'   smooth_term,
-#'   size,
-#'   fill,
-#'   alpha,
-#'   color)
+#'   quantile = NULL,
+#'   pred,
+#'   plot.old = FALSE,
+#'   xlab = NULL,
+#'   ylab = "fit",
+#'   size = 0.5,
+#'   fill = "steelblue2",
+#'   color = "black",
+#'   alpha = 1)
 #'
-#' @param qgam A qgam object, created with \code{qgam} or extracted from a \code{mqgam} object.
-#' @param smooth_term The smooth term you wish to plot. Must be one of the smooth terms given in the qgam formula.
+#' @param qgam A qgam object created with \code{qgam::qgam} or extracted from a \code{qgam::mqgam} object, or a collection of qgams created with \code{qgam::mqgam}.
+#' @param quantile If \code{qgam} is a collection of qgam models, specify the quantile you are interested in. Not meaningful for single qgam objects.
+#' @param pred The smooth term you wish to plot. Must be one of the smooth terms given in the qgam formula.
+#' @param smooth_term *obsolete*: Use \code{pred} instead.
 #' @param plot.old Plot the original \code{plot} as well.
+#' @param xlab The x-axis label.
+#' @param ylab The y-axis label.
 #' @param size Size argument for the ggplot object; specifies the size of the line.
 #' @param fill Color argument for the ggplot object; specifies the color of the confidence interval.
-#' @param alpha Alpha argument for the ggplot object; specifies the transparency of the confidence interval.
 #' @param color Color argument for the ggplot object; specifies the color of the line.
+#' @param alpha Alpha argument for the ggplot object; specifies the transparency of the confidence interval.
 #'
 #' @return A ggplot object.
 #'
@@ -26,20 +34,62 @@
 #' @references Wickham, H. (2016). ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York.
 #'
 #' @examples
-#' better_smooth_plot(qgam = tmp.x.3,
-#'   smooth_term = "Age")
 #'
-#' better_smooth_plot(qgam = tmp.x.3,
-#'   smooth_term = "Age",
-#'   size = 1,
-#'   fill = "purple",
-#'   alpha = 0.5,
-#'   color = "darkgreen") +
-#'   labs(subtitle = "You can basically add all ggplot functions and arguments you are familiar with.")
+#' # using a single qgam extracted from an mqgam object OR fitted with qgam::qgam
+#' better_smooth_plot(qgam = tmp.x.1,
+#'   pred = "PIT")
+#'
+#' # using a qgam that is part of an mqgam object
+#' better_smooth_plot(qgam = x.qgams,
+#'   quantile = 0.5,
+#'   pred = "PIT")
+#'
+#' # combining better_smooth_plot with ggplot2
+#' better_smooth_plot(qgam = tmp.x.1,
+#'   pred = "PIT") +
+#'   theme_void() +
+#'   labs(subtitle = "This is a subtitle")
 #'
 #' @export
 
-better_smooth_plot <- function(qgam, smooth_term, plot.old = F, size = 0.5, fill = "steelblue2", alpha = 1, color = "black"){
+better_smooth_plot <- function(qgam, quantile = NULL, pred, smooth_term = NULL, plot.old = F, xlab = NULL, ylab = "fit", size = 0.5, fill = "steelblue2", alpha = 1, color = "black"){
+
+  require(ggplot2)
+
+  # quantile argument not needed for single qgams
+  if(length(qgam) >= 10 & !is.null(quantile)){
+    cli::cli_alert_warning(glue::glue("The quantile argument is not meaningful for single QGAM objects. Plotting anyway."))
+  }
+
+  # collection but no quantile specified
+  if(length(qgam) <= 10 & is.null(quantile)){
+
+    stop("It appears your qgam argument is a collection of QGAMs created with qgam::mqgam, not a single QGAM. Please specify the quantile you are interested in.")
+
+  }
+
+  # collection given & quantile specified
+  if(length(qgam) <= 10 & !is.null(quantile)){
+
+    # collection with specified quantile but quantile not part of collection
+    test <- which(names(qgam$fit) == quantile)
+
+    if(length(test) == 0){
+
+      stop("Please specify a quantile for which a QGAM model was fitted.")
+
+    } else {
+
+      # collection with correctly specified quantile
+      qgam <- qdo(qgam, quantile)
+
+    }
+
+  }
+
+  if(!is.null(smooth_term)){
+    pred <- smooth_term
+  }
 
   R.devices::suppressGraphics({
     bad_plot <- plot(qgam,
@@ -54,7 +104,7 @@ better_smooth_plot <- function(qgam, smooth_term, plot.old = F, size = 0.5, fill
 
   }
 
-  number <- which(smooth_terms == smooth_term, arr.ind=TRUE)[1]
+  number <- which(smooth_terms == pred, arr.ind=TRUE)[1]
 
   if(plot.old == T){
     bad_plot <- plot(qgam,
@@ -62,7 +112,7 @@ better_smooth_plot <- function(qgam, smooth_term, plot.old = F, size = 0.5, fill
   }
 
   if(is.na(number)){
-    cli::cli_alert_danger(glue::glue("Unknown smooth_term specified. Please specify a smooth_term used in your qgam."))
+    stop("Please specify a parametric predictor which is part of your QGAM model.")
   }
 
   x <- bad_plot[[number]][["x"]]
@@ -74,8 +124,8 @@ better_smooth_plot <- function(qgam, smooth_term, plot.old = F, size = 0.5, fill
   data$se_top <- data$se + data$V2
   data$se_bot <- data$V2 - data$se
 
-  xlabname <- bad_plot[[number]][["xlab"]]
-  ylabname <- bad_plot[[number]][["ylab"]]
+  xlabname <- pred
+  ylabname <- ylab
 
   newplot <- ggplot2::ggplot(data = data) +
     geom_ribbon(aes(x = x, y = fit, ymin = se_bot, ymax = se_top), fill = fill, alpha = alpha) +
@@ -87,7 +137,7 @@ better_smooth_plot <- function(qgam, smooth_term, plot.old = F, size = 0.5, fill
     theme(plot.title = element_text(hjust = 0.5),
           legend.position = "none")
 
-  cli::cli_alert_info(glue::glue(paste("Plotting smooth term", paste(smooth_term, ".", sep = ""))))
+  cli::cli_alert_info(glue::glue(paste("Plotting smooth term", paste(pred, ".", sep = ""))))
 
   return(newplot)
 
