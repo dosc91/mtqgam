@@ -2,6 +2,7 @@
 
 export(better_parametric_plot)
 export(better_smooth_plot)
+export(extract_t)
 export(extract_x)
 export(extract_y)
 export(facet_parametric_plot)
