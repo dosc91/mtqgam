@@ -7,7 +7,7 @@
 
 `mtqgam` offers functions
 
-- to extract x and y coordinates of time-normalized mouse-tracking data
+- to extract t, x and y coordinates of time-normalized mouse-tracking data
 - to conveniently plot parametric and smooth terms of QGAMs
 - to create multi-panel plots of parametric and smooth terms of QGAMs
 
