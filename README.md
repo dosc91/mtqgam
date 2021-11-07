@@ -7,7 +7,7 @@
 
 `mtqgam` offers functions
 
-- to extract t, x and y coordinates of time-normalized mouse-tracking data
+- to extract t values, and x and y coordinates of time-normalized mouse-tracking data
 - to conveniently plot parametric and smooth terms of QGAMs
 - to create multi-panel plots of parametric and smooth terms of QGAMs
 
@@ -15,7 +15,7 @@ Check out the [vignette](http://htmlpreview.github.io/?https://github.com/dosc91
 
 # What's New
 
-In version 0.3, two functions have been added:
+In version 0.3, three functions have been added:
 
 - extract_t - Extract t coordinates (time values) from time-normalized mouse-tracking data
 - facet_parametric_plot - Create multi-panel parametric plots using ggplot2
