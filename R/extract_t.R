@@ -1,8 +1,8 @@
-#' Extract y coordinates of time-normalized mouse-tracking data
+#' Extract t coordinates of time-normalized mouse-tracking data
 #'
-#' @description \code{extract_y} extracts the y coordinates from a time-normalized \code{mousetrap} object.
+#' @description \code{extract_t} extracts the t coordinates, i.e. time values, from a time-normalized \code{mousetrap} object.
 #'
-#' @usage extract_x(
+#' @usage extract_t(
 #'   tn_data,
 #'   ID_column,
 #'   timestamps,
@@ -15,8 +15,8 @@
 #'
 #' @return A data frame.
 #' \itemize{
-#'   \item \code{key} - Numbered coordinates per mouse-track ID.
-#'   \item \code{value} - The coordinate value.
+#'   \item \code{key} - Numbered values per mouse-track ID.
+#'   \item \code{value} - The time value.
 #'   \item \code{ID} - Mouse-track IDs.
 #' }
 #'
@@ -34,20 +34,20 @@
 #' tn_tracks$ID <- mt_data$data$ID
 #'
 #' # use function
-#' extract_y(tn_data = tn_tracks,
+#' extract_t(tn_data = tn_tracks,
 #' ID_column = tn_tracks$ID,
 #' timestamps = 140)
 #'
 #' @export
 
-extract_y <- function(tn_data, ID_column, timestamps, verbose = TRUE)
+extract_t <- function(tn_data, ID_column, timestamps, verbose = TRUE)
 {
 
   if(verbose == TRUE){
     pb <- txtProgressBar(min = 0, max = length(rownames(tn_data)), style = 3)
   }
 
-  y_coords <- data.frame(matrix(ncol = timestamps, nrow = 0))
+  t_coords <- data.frame(matrix(ncol = timestamps, nrow = 0))
 
   for(i in 1:length(rownames(tn_data))){
 
@@ -55,11 +55,11 @@ extract_y <- function(tn_data, ID_column, timestamps, verbose = TRUE)
       setTxtProgressBar(pb, i)
     }
 
-    y_coords[i,1:timestamps] <- tn_data[i, (2*timestamps+1):(timestamps*3)]
+    t_coords[i,1:timestamps] <- tn_data[i, (1):(timestamps)]
 
   }
 
-  y_coords <- tidyr::gather(y_coords)
+  t_coords <- tidyr::gather(t_coords)
 
   id_collection <- data.frame(matrix(ncol = 1, nrow = 0))
 
@@ -71,14 +71,12 @@ extract_y <- function(tn_data, ID_column, timestamps, verbose = TRUE)
 
   IDs <- id_collection[,1]
 
-  y_coords$ID <- IDs
-
-  y_coords$key <- gsub("X", "Y", y_coords$key)
+  t_coords$ID <- IDs
 
   if(verbose == TRUE){
     close(pb)
   }
 
-  return(y_coords)
+  return(t_coords)
 
 }

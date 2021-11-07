@@ -5,13 +5,20 @@
 #' @usage extract_x(
 #'   tn_data,
 #'   ID_column,
-#'   timestamps)
+#'   timestamps,
+#'   verbose = TRUE)
 #'
 #' @param tn_data The time-normalized mouse-tracking data. Can be extracted from the \code{mousetrap} object via \code{df$tn_trajectories}.
 #' @param ID_column To maintain identification of individual trials, specify your ID variable. It must be part of \code{tn_data}. This can be achieved via \code{tn_data$ID <- df$data$ID}.
 #' @param timestamps Specify the number of timestamps you have used for time-normalizing.
+#' @param verbose If \code{true} (which is the default), a progress bar is displayed.
 #'
 #' @return A data frame.
+#' \itemize{
+#'   \item \code{key} - Numbered coordinates per mouse-track ID.
+#'   \item \code{value} - The coordinate value.
+#'   \item \code{ID} - Mouse-track IDs.
+#' }
 #'
 #' @author D. Schmitz
 #'
@@ -29,34 +36,46 @@
 #' # use function
 #' extract_x(tn_data = tn_tracks,
 #' ID_column = tn_tracks$ID,
-#' timestamps = 138)
+#' timestamps = 140)
 #'
 #' @export
 
-extract_x <- function(tn_data, ID_column, timestamps)
+extract_x <- function(tn_data, ID_column, timestamps, verbose = TRUE)
 {
+
+  if(verbose == TRUE){
+    pb <- txtProgressBar(min = 0, max = length(rownames(tn_data)), style = 3)
+  }
 
   x_coords <- data.frame(matrix(ncol = timestamps, nrow = 0))
 
   for(i in 1:length(rownames(tn_data))){
 
-    x_coords[i,1:timestamps] <- tn_tracks[i, (timestamps+1):(timestamps*2)]
+    if(verbose == TRUE){
+      setTxtProgressBar(pb, i)
+    }
+
+    x_coords[i,1:timestamps] <- tn_data[i, (timestamps+1):(timestamps*2)]
 
   }
 
   x_coords <- tidyr::gather(x_coords)
 
-  test <- data.frame(matrix(ncol = 1, nrow = 0))
+  id_collection <- data.frame(matrix(ncol = 1, nrow = 0))
 
   for(k in 1:length(rownames(tn_data))){
 
-    test[k, 1] <- ID_column[k]
+    id_collection[k, 1] <- ID_column[k]
 
   }
 
-  IDs <- test[,1]
+  IDs <- id_collection[,1]
 
   x_coords$ID <- IDs
+
+  if(verbose == TRUE){
+    close(pb)
+  }
 
   return(x_coords)
 
