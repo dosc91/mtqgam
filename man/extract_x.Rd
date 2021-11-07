@@ -7,7 +7,8 @@
 extract_x(
   tn_data,
   ID_column,
-  timestamps)
+  timestamps,
+  verbose = TRUE)
 }
 \arguments{
 \item{tn_data}{The time-normalized mouse-tracking data. Can be extracted from the \code{mousetrap} object via \code{df$tn_trajectories}.}
@@ -15,9 +16,16 @@ extract_x(
 \item{ID_column}{To maintain identification of individual trials, specify your ID variable. It must be part of \code{tn_data}. This can be achieved via \code{tn_data$ID <- df$data$ID}.}
 
 \item{timestamps}{Specify the number of timestamps you have used for time-normalizing.}
+
+\item{verbose}{If \code{true} (which is the default), a progress bar is displayed.}
 }
 \value{
 A data frame.
+\itemize{
+\item \code{key} - Numbered coordinates per mouse-track ID.
+\item \code{value} - The coordinate value.
+\item \code{ID} - Mouse-track IDs.
+}
 }
 \description{
 \code{extract_x} extracts the x coordinates from a time-normalized \code{mousetrap} object.
@@ -32,7 +40,7 @@ tn_tracks$ID <- mt_data$data$ID
 # use function
 extract_x(tn_data = tn_tracks,
 ID_column = tn_tracks$ID,
-timestamps = 138)
+timestamps = 140)
 
 }
 \references{
