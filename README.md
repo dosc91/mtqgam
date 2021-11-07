@@ -17,6 +17,7 @@ Check out the [vignette](http://htmlpreview.github.io/?https://github.com/dosc91
 
 In version 0.3, two functions have been added:
 
+- extract_t - Extract t coordinates (time values) from time-normalized mouse-tracking data
 - facet_parametric_plot - Create multi-panel parametric plots using ggplot2
 - facet_smooth_plot - Create multi-panel smooth term plots using ggplot2
 
@@ -24,8 +25,14 @@ Additionally, qualitify of life improving modifications to the following functio
 
 - better_parametric_plot - Create parametric term plots using ggplot2
 - better_smooth_plot - Create smooth term plots using ggplot2
+- extract_x - Extract x coordinates
+- extract_y - Extract y coordinates
 
-That is, both functions now take a much more simple `pred` argument. Before, this had to be a named list of factor levels; now, this is just the predictor variable itself. Other modifications include the addition of more meaningful error messages and streamlining the argument structure overall. Code created with versions prior 0.3 continue to function. Please have a look at the functions [vignette](http://htmlpreview.github.io/?https://github.com/dosc91/mtqgam/blob/main/vignettes/functions.html) and the documentation of the pertinent functions for more detailed information.
+That is, both plotting functions now take a much more simple `pred` argument. Before, this had to be a named list of factor levels; now, this is just the predictor variable itself. Other modifications include the addition of more meaningful error messages and streamlining the argument structure overall. 
+
+The `extract_` functions now display a prograss bar when run. This can be toggled off specifying the newly introduced `verbose` argument as `false`.
+
+Code created with prior versions of the package continues to function. Please have a look at the functions [vignette](http://htmlpreview.github.io/?https://github.com/dosc91/mtqgam/blob/main/vignettes/functions.html) and the documentation of the pertinent functions for more detailed information.
 
 # How to Install
 
