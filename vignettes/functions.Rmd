@@ -57,6 +57,7 @@ This is a full list of all functions currently contained in `SfL`:
 
 - [better_parametric_plot](#better_parametric_plot)
 - [better_smooth_plot](#better_smooth_plot)
+- [extract_t](#extract_t)
 - [extract_x](#extract_x)
 - [extract_y](#extract_y)
 - [facet_parametric_plot](#facet_parametric_plot)
@@ -156,9 +157,30 @@ better_smooth_plot(qgam = tmp.x.1, pred = "PIT",
 
 ---
 
+# Extract t Coordinates {#extract_t}
+
+The `extract_t` function extracts the t coordinates, i.e. the time values, from a time-normalized `mousetrap` object.
+
+The function requires time-normalized mouse-tracking data, an ID column as part of the time-normalized data set, and the number of timestamps used for time-normalizing.
+
+```{r eval=F}
+# extract time-normalized data
+tn_tracks <- as.data.frame(mt_data$tn_trajectories)
+
+# add ID columns
+tn_tracks$ID <- mt_data$data$ID
+
+# use function
+extract_t(tn_data = tn_tracks,
+ID_column = tn_tracks$ID,
+timestamps = 140)
+```
+
+---
+
 # Extract x Coordinates {#extract_x}
 
-The `extract_x` extracts the x coordinates from a time-normalized `mousetrap` object.
+The `extract_x` function extracts the x coordinates from a time-normalized `mousetrap` object.
 
 The function requires time-normalized mouse-tracking data, an ID column as part of the time-normalized data set, and the number of timestamps used for time-normalizing.
 
@@ -172,14 +194,14 @@ tn_tracks$ID <- mt_data$data$ID
 # use function
 extract_x(tn_data = tn_tracks,
 ID_column = tn_tracks$ID,
-timestamps = 138)
+timestamps = 140)
 ```
 
 ---
 
 # Extract y Coordinates {#extract_y}
 
-The `extract_y` extracts the y coordinates from a time-normalized `mousetrap` object.
+The `extract_y` function extracts the y coordinates from a time-normalized `mousetrap` object.
 
 The function requires time-normalized mouse-tracking data, an ID column as part of the time-normalized data set, and the number of timestamps used for time-normalizing.
 
@@ -193,7 +215,7 @@ tn_tracks$ID <- mt_data$data$ID
 # use function
 extract_x(tn_data = tn_tracks,
 ID_column = tn_tracks$ID,
-timestamps = 138)
+timestamps = 140)
 ```
 
 ---
