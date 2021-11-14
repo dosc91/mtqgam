@@ -1,7 +1,11 @@
 ---
 title: "Functions"
-date: "Version 0.3 - November 2021"
-output: rmarkdown::html_vignette
+date: "Version 0.4 - November 2021"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 2
+    toc_float: true
 vignette: >
   %\VignetteIndexEntry{Functions}
   %\VignetteEngine{knitr::rmarkdown}
@@ -34,8 +38,9 @@ library(ggplot2)
 ```{r include=F}
 # all not shown stuff
 
-load("C:/Users/Adomo/Dropbox/HHU_2373/PhD/Experiment_02_+_03/01a_Analyse/qgams_x.RData")
-tmp.x.1 <- qdo(qgams_x, 0.1)
+load("C:/Users/Adomo/Dropbox/HHU_2373/PhD/Experiment_02_+_03/01a_Analyse/new_qgams/01_mtqgam_data/qgams_nm_base_x.RData")
+tmp.x.1 <- qdo(qgams_nm_base_x, 0.5)
+qgams_x <- qgams_nm_base_x
 
 ```
 
@@ -53,15 +58,16 @@ This vignette gives an overview of functions included in the `mtqgam` package. P
 
 # Overview
 
-This is a full list of all functions currently contained in `SfL`:
+This is a full list of all functions currently contained in `mtqgam`:
 
-- [better_parametric_plot](#better_parametric_plot)
-- [better_smooth_plot](#better_smooth_plot)
-- [extract_t](#extract_t)
-- [extract_x](#extract_x)
-- [extract_y](#extract_y)
-- [facet_parametric_plot](#facet_parametric_plot)
-- [facet_smooth_plot](#facet_smooth_plot)
+- [better_parametric_plot](#better_parametric_plot) - Better Parametric Plots
+- [better_smooth_plot](#better_smooth_plot) - Better Smooth Plots
+- [better_interaction_plot](#better_interaction_plot) - Better Interaction Plots
+- [facet_parametric_plot](#facet_parametric_plot) - Multi-Panel Parametric Plots
+- [facet_smooth_plot](#facet_smooth_plot) - Multi-Panel Smooth Plots
+- [extract_t](#extract_t) - Extract t Coordinates
+- [extract_x](#extract_x) - Extract x Coordinates
+- [extract_y](#extract_y) - Extract y Coordinates
 
 Note: Due to size reasons, no exemplary data set is included in this package.
 
@@ -89,7 +95,7 @@ old.plot <- plot_parametric(tmp.x.1,
 better_parametric_plot(qgam = tmp.x.1, pred = "Condition")
 ```
 
-### using a the output of `qgam::mqgam`
+### using the output of `qgam::mqgam`
 
 ```{r fig.align='center'}
 better_parametric_plot(qgam = qgams_x, quantile = 0.5, pred = "Condition")
@@ -138,7 +144,7 @@ old.plot <- plot(tmp.x.1,
 better_smooth_plot(qgam = tmp.x.1, pred = "PIT")
 ```
 
-### using a the output of `qgam::mqgam`
+### using the output of `qgam::mqgam`
 
 ```{r fig.align='center'}
 better_smooth_plot(qgam = qgams_x, quantile = 0.5, pred = "PIT")
@@ -157,65 +163,72 @@ better_smooth_plot(qgam = tmp.x.1, pred = "PIT",
 
 ---
 
-# Extract t Coordinates {#extract_t}
+# Better Interaction Plots {#better_interaction_plot}
 
-The `extract_t` function extracts the t coordinates, i.e. the time values, from a time-normalized `mousetrap` object.
+The `better_interaction_plot` function creates either a smooth plot with confidence intervals (for numeric:factor interactions) or a point plot with confidence interval ranges (for factor:factor interactions) using `ggplot2.` The underlying functions are similar to `better_parametric_plot` and `better_smooth_plot` (as introduced above). Using similar underlying functions, `better_interaction_plot` adds the variability and flexibility of `ggplot2` to plots of interactions.
 
-The function requires time-normalized mouse-tracking data, an ID column as part of the time-normalized data set, and the number of timestamps used for time-normalizing.
+The functions requires a QGAM model. The QGAM model can either be the output of `qgam::qgam`, the output of `qgam::mqgam`, or a single QGAM model extracted from a `qgam::mqgam` object. Specify the quantile you wish to plot when using the output of `qgam::mqgam`. In all cases, the `pred` and the `cond` argument are required. `pred` is the parametric effect you wish to plot; `cond` is either the (parametric or smooth) term `pred` is in interaction with.
 
-```{r eval=F}
-# extract time-normalized data
-tn_tracks <- as.data.frame(mt_data$tn_trajectories)
+## factor:factor Interaction Plots
 
-# add ID columns
-tn_tracks$ID <- mt_data$data$ID
+The `better_interaction_plot` automatically checks whether the variable given as `pred` input is numeric or a factor. In case of factors, plots of the following type are created.
 
-# use function
-extract_t(tn_data = tn_tracks,
-ID_column = tn_tracks$ID,
-timestamps = 140)
+### using a single QGAM extracted from a `qgam::mqgam` object OR created using `qgam::qgam`
+
+```{r fig.align='center'}
+better_interaction_plot(qgam = tmp.x.1, pred = "Condition", cond = "correct")
 ```
 
----
+### using the output of `qgam::mqgam`
 
-# Extract x Coordinates {#extract_x}
-
-The `extract_x` function extracts the x coordinates from a time-normalized `mousetrap` object.
-
-The function requires time-normalized mouse-tracking data, an ID column as part of the time-normalized data set, and the number of timestamps used for time-normalizing.
-
-```{r eval=F}
-# extract time-normalized data
-tn_tracks <- as.data.frame(mt_data$tn_trajectories)
-
-# add ID columns
-tn_tracks$ID <- mt_data$data$ID
-
-# use function
-extract_x(tn_data = tn_tracks,
-ID_column = tn_tracks$ID,
-timestamps = 140)
+```{r fig.align='center'}
+better_interaction_plot(qgam = qgams_x, quantile = 0.5, pred = "Condition", cond = "correct")
 ```
 
----
+### Modifications
 
-# Extract y Coordinates {#extract_y}
+Plots created with `better_smooth_plot` can be modified using common `ggplot2` functions:
 
-The `extract_y` function extracts the y coordinates from a time-normalized `mousetrap` object.
+```{r fig.align='center'}
+better_interaction_plot(qgam = qgams_x, quantile = 0.5, pred = "Condition", cond = "correct",
+                        color = c("purple", "blue")) +
+                        theme_classic() +
+                        labs(subtitle = "This is a subtitle")
+```
 
-The function requires time-normalized mouse-tracking data, an ID column as part of the time-normalized data set, and the number of timestamps used for time-normalizing.
+## numeric:factor Interaction Plots
 
-```{r eval=F}
-# extract time-normalized data
-tn_tracks <- as.data.frame(mt_data$tn_trajectories)
+The `better_interaction_plot` automatically checks whether the variable given as `pred` input is numeric or a factor. In case of numeric variables, plots of the following type are created. By default, these plots are presented in facets.
 
-# add ID columns
-tn_tracks$ID <- mt_data$data$ID
+### using a single QGAM extracted from a `qgam::mqgam` object OR created using `qgam::qgam`
 
-# use function
-extract_x(tn_data = tn_tracks,
-ID_column = tn_tracks$ID,
-timestamps = 140)
+```{r fig.align='center'}
+better_interaction_plot(qgam = tmp.x.1, pred = "PIT", cond = "Condition")
+```
+
+### using the output of `qgam::mqgam`
+
+```{r fig.align='center'}
+better_interaction_plot(qgam = qgams_x, quantile = 0.5, pred = "PIT", cond = "Condition")
+```
+
+### Modifications
+
+Plots created with `better_smooth_plot` can be modified using common `ggplot2` functions:
+
+```{r fig.align='center'}
+better_interaction_plot(qgam = qgams_x, quantile = 0.5, pred = "PIT", cond = "Condition",
+                        fill = "purple") +
+                        theme_classic() +
+                        labs(subtitle = "This is a subtitle")
+```
+
+### `no_facet` Plots
+
+Interactions of type numeric:factor can also be plotted in a single plot. To achieve this, specify the `type` argument as `no_facet`.
+
+```{r fig.align='center'}
+better_interaction_plot(qgam = tmp.x.1, pred = "PIT", cond = "Condition", type = "no_facet")
 ```
 
 ---
@@ -292,6 +305,70 @@ Plots created with `facet_smooth_plot` use a free scale, i.e. the scale of the a
 ```{r fig.align='center', fig.height=8}
 facet_smooth_plot(qgam = qgams_x, pred = "PIT",
                       scale = "fixed")
+```
+
+
+---
+
+# Extract t Coordinates {#extract_t}
+
+The `extract_t` function extracts the t coordinates, i.e. the time values, from a time-normalized `mousetrap` object.
+
+The function requires time-normalized mouse-tracking data, an ID column as part of the time-normalized data set, and the number of timestamps used for time-normalizing.
+
+```{r eval=F}
+# extract time-normalized data
+tn_tracks <- as.data.frame(mt_data$tn_trajectories)
+
+# add ID columns
+tn_tracks$ID <- mt_data$data$ID
+
+# use function
+extract_t(tn_data = tn_tracks,
+ID_column = tn_tracks$ID,
+timestamps = 140)
+```
+
+---
+
+# Extract x Coordinates {#extract_x}
+
+The `extract_x` function extracts the x coordinates from a time-normalized `mousetrap` object.
+
+The function requires time-normalized mouse-tracking data, an ID column as part of the time-normalized data set, and the number of timestamps used for time-normalizing.
+
+```{r eval=F}
+# extract time-normalized data
+tn_tracks <- as.data.frame(mt_data$tn_trajectories)
+
+# add ID columns
+tn_tracks$ID <- mt_data$data$ID
+
+# use function
+extract_x(tn_data = tn_tracks,
+ID_column = tn_tracks$ID,
+timestamps = 140)
+```
+
+---
+
+# Extract y Coordinates {#extract_y}
+
+The `extract_y` function extracts the y coordinates from a time-normalized `mousetrap` object.
+
+The function requires time-normalized mouse-tracking data, an ID column as part of the time-normalized data set, and the number of timestamps used for time-normalizing.
+
+```{r eval=F}
+# extract time-normalized data
+tn_tracks <- as.data.frame(mt_data$tn_trajectories)
+
+# add ID columns
+tn_tracks$ID <- mt_data$data$ID
+
+# use function
+extract_x(tn_data = tn_tracks,
+ID_column = tn_tracks$ID,
+timestamps = 140)
 ```
 
 ---
