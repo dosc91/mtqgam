@@ -6,8 +6,8 @@ Authors@R:
            family = "Schmitz",
            role = c("aut", "cre"),
            email = "contact@dominicschmitz.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: Useful function for mouse-tracking data in QGAMs.
+           comment = c(ORCID = "0000-0003-0636-5249"))
+Description: Useful functions for mouse-tracking data in QGAMs.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
