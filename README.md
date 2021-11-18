@@ -40,6 +40,7 @@ This is a full list of all functions currently contained in `mtqgam`
 - better_parametric_plot - Create parametric term plots using ggplot2
 - better_smooth_plot - Create smooth term plots using ggplot2
 - better_interaction_plot - Create interaction plots using ggplot2
+- extract_t - Extract t coordinates
 - extract_x - Extract x coordinates
 - extract_y - Extract y coordinates
 - facet_parametric_plot - Create multi-panel parametric plots using ggplot2
