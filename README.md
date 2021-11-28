@@ -12,11 +12,11 @@
 - to create multi-panel plots of parametric and smooth terms of QGAMs
 - to summarize mqgam objects
 
-Check out the [references](http://htmlpreview.github.io/?https://github.com/dosc91/mtqgam/blob/main/docs/index.html) for more detailed information.
+Check out the [references](https://dosc91.github.io/mtqgam/reference/index.html) for more detailed information.
 
 # What's New
 
-Please check the [changelog](http://htmlpreview.github.io/?https://github.com/dosc91/mtqgam/blob/main/docs/news/index.html) for information on version history and function updates.
+Please check the [changelog](https://dosc91.github.io/mtqgam/news/index.html) for information on version history and function updates.
 
 # How to Install
 
