@@ -41,22 +41,19 @@
 #' @examples
 #'
 #' # using a single qgam extracted from an mqgam object OR fitted with qgam::qgam
-#' better_parametric_plot(qgam = tmp.x.1,
-#'   pred = "Condition")
+#' better_parametric_plot(qgam = mtqgam_qgam,
+#'   pred = "factor_3")
 #'
 #' # using a qgam that is part of an mqgam object
-#' better_parametric_plot(qgam = x.qgams,
-#'   quantile = 0.5,
-#'   pred = "Condition")
+#' library(qgam)
 #'
-#' # interactions
-#' plot_parametric(qgam = tmp.x.1,
-#' pred = "Condition",
-#' cond = list(responseType = c("correct")))
+#' better_parametric_plot(qgam = mtqgam_mqgam,
+#'   quantile = 0.5,
+#'   pred = "factor_3")
 #'
 #' # combining better_parametric_plot with ggplot2
-#' better_parametric_plot(qgam = tmp.x.1,
-#'   pred = "Condition") +
+#' better_parametric_plot(qgam = mtqgam_qgam,
+#'   pred = "factor_3") +
 #'   theme_void() +
 #'   labs(subtitle = "This is a subtitle")
 #'
@@ -91,7 +88,7 @@ better_parametric_plot <- function(qgam, quantile = NULL, pred, cond = NULL, pri
     } else {
 
       # collection with correctly specified quantile
-      qgam <- qdo(qgam, quantile)
+      qgam <- qgam::qdo(qgam, quantile)
 
     }
 

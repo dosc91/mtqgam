@@ -2,7 +2,7 @@
 #'
 #' @description \code{facet_parametric_plot} creates a multi-panel plot of point plots with confidence interval ranges using \code{ggplot2}.
 #'
-#' @usage better_parametric_plot(
+#' @usage facet_parametric_plot(
 #'   qgam,
 #'   pred,
 #'   cond = NULL,
@@ -13,7 +13,7 @@
 #'   ylab = NULL,
 #'   scales = "free",
 #'   size = 0.5,
-#'   color = c("red", "blue"),
+#'   color = NULL,
 #'   alpha = 1)
 #'
 #' @param qgam An mqgam object created with \code{qgam::mqgam}.
@@ -40,18 +40,18 @@
 #' @examples
 #'
 #' # basic example
-#' facet_parametric_plot(qgam = mqgams_x,
-#'   pred = "Condition")
+#' facet_parametric_plot(qgam = mtqgam_mqgam,
+#'   pred = "factor_3")
 #'
 #' # combining facet_parametric_plot with ggplot2
-#' facet_parametric_plot(qgam = mqgams_x,
-#'   pred = "Condition") +
+#' facet_parametric_plot(qgam = mtqgam_mqgam,
+#'   pred = "factor_3") +
 #'   theme_void() +
 #'   labs(subtitle = "This is a subtitle")
 #'
 #' @export
 
-facet_parametric_plot <- function(qgam, pred, cond = NULL, print.summary = F, order = NULL, ncol = 1, xlab = "fit", ylab = NULL, scales = "free", size = 0.5, color = c("red", "blue"), alpha = 1){
+facet_parametric_plot <- function(qgam, pred, cond = NULL, print.summary = F, order = NULL, ncol = 1, xlab = "fit", ylab = NULL, scales = "free", size = 0.5, color = NULL, alpha = 1){
 
   require(ggplot2)
 
@@ -105,12 +105,10 @@ facet_parametric_plot <- function(qgam, pred, cond = NULL, print.summary = F, or
   if(is.null(color)){
     color <- c(rep("black", length(data$levels)))
   } else if (!is.null(color)){
-    color <- color
+    color <- c(rep(color, length(names(qgam[["fit"]]))))
   }
 
   name <- names(pred_list)
-
-  color <- c(rep(color, length(names(qgam[["fit"]]))))
 
   plot <- ggplot(data = data) +
     geom_pointrange(aes(x = fit, y = levels, xmin = fit - CI, xmax = fit + CI), size = size, color = color, alpha = alpha) +

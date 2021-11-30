@@ -2,7 +2,7 @@
 #'
 #' @description \code{facet_smooth_plot} creates a multi-panel plot of smooth term plots with confidence intervals using \code{ggplot2}.
 #'
-#' @usage better_smooth_plot(
+#' @usage facet_smooth_plot(
 #'   qgam,
 #'   pred,
 #'   ncol = 1,
@@ -36,12 +36,12 @@
 #' @examples
 #'
 #' # basic example
-#' facet_smooth_plot(qgam = mqgams_x,
-#'   pred = "order")
+#' facet_smooth_plot(qgam = mtqgam_mqgam,
+#'   pred = "numeric_2")
 #'
 #' # combining facet_smooth_plot with ggplot2
-#' facet_smooth_plot(qgam = mqgams_x,
-#'   pred = "order") +
+#' facet_smooth_plot(qgam = mtqgam_mqgam,
+#'   pred = "numeric_2") +
 #'   theme_void() +
 #'   labs(subtitle = "This is a subtitle")
 #'

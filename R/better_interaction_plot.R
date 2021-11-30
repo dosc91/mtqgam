@@ -10,7 +10,7 @@
 #'   pred,
 #'   cond,
 #'   order,
-#'   ncol,
+#'   ncol = 1,
 #'   type,
 #'   xlab = NULL,
 #'   ylab = NULL,
@@ -48,63 +48,65 @@
 #' ### examples for factor:factor interactions
 #'
 #' # using a single qgam extracted from an mqgam object OR fitted with qgam::qgam
-#' better_interaction_plot(qgam = qgam,
-#'   pred = "correct",
-#'   cond = "Condition")
+#' better_interaction_plot(qgam = mtqgam_qgam,
+#'   pred = "factor_3",
+#'   cond = "factor_2")
 #'
 #' # using a qgam that is part of an mqgam object
-#' better_interaction_plot(qgam = x.qgams,
+#' better_interaction_plot(qgam = mtqgam_mqgam,
 #'   quantile = 0.5,
-#'   pred = "correct",
-#'   cond = "Condition")
+#'   pred = "factor_3",
+#'   cond = "factor_2")
 #'
 #' # specifying color
-#' better_interaction_plot(qgam = qgam,
-#'   pred = "correct",
-#'   cond = "Condition",
+#' better_interaction_plot(qgam = mtqgam_qgam,
+#'   pred = "factor_3",
+#'   cond = "factor_2",
 #'   color = c("blue", "purple"))
 #'
 #' # combining better_interaction_plot with ggplot2
-#' better_interaction_plot(qgam = qgam,
-#'   pred = "correct",
-#'   cond = "Condition") +
+#' better_interaction_plot(qgam = mtqgam_qgam,
+#'   pred = "factor_3",
+#'   cond = "factor_2") +
 #'   theme_void() +
 #'   labs(subtitle = "This is a subtitle")
 #'
 #' ### examples for numeric:factor interactions
 #'
 #' # using a single qgam extracted from an mqgam object OR fitted with qgam::qgam
-#' better_interaction_plot(qgam = qgam,
-#'   pred = "PIT",
-#'   cond = "Condition")
+#' better_interaction_plot(qgam = mtqgam_qgam,
+#'   pred = "numeric_2",
+#'   cond = "factor_1")
 #'
-#' better_interaction_plot(qgam = qgam,
-#'   pred = "PIT",
-#'   cond = "Condition",
+#' better_interaction_plot(qgam = mtqgam_qgam,
+#'   pred = "numeric_2",
+#'   cond = "factor_1",
 #'   type = "no_facet")
 #'
 #' # specifying color
-#' better_interaction_plot(qgam = qgam,
-#'   pred = "PIT",
-#'   cond = "Condition",
+#' better_interaction_plot(qgam = mtqgam_qgam,
+#'   pred = "numeric_2",
+#'   cond = "factor_1",
 #'   color = "blue", "purple")
 #'
 #' # using a qgam that is part of an mqgam object
-#' better_interaction_plot(qgam = x.qgams,
+#' better_interaction_plot(qgam = mtqgam_mqgam,
 #'   quantile = 0.5,
-#'   pred = "PIT",
-#'   cond = "Condition")
+#'   pred = "numeric_2",
+#'   cond = "factor_1")
 #'
 #' # combining better_interaction_plot with ggplot2
-#' better_interaction_plot(qgam = qgam,
-#'   pred = "correct",
-#'   cond = "Condition") +
+#' better_interaction_plot(qgam = mtqgam_qgam,
+#'   pred = "numeric_2",
+#'   cond = "factor_1") +
 #'   theme_void() +
 #'   labs(subtitle = "This is a subtitle")
 #'
 #' @export
 
-better_interaction_plot <- function(qgam, quantile = NULL, pred, cond = NULL, order = NULL, ncol = NULL, type = NULL, xlab = NULL, ylab = NULL, scales = NULL, size = 0.5, fill = NULL, color = NULL, alpha = 1){
+better_interaction_plot <- function(qgam, quantile = NULL, pred, cond = NULL, order = NULL, ncol = 1, type = NULL, xlab = NULL, ylab = NULL, scales = NULL, size = 0.5, fill = NULL, color = NULL, alpha = 1){
+
+  require(ggplot2)
 
   if(length(pred) == 0){
     stop("Please specify a predictor which is part of your QGAM model.")
@@ -138,7 +140,7 @@ better_interaction_plot <- function(qgam, quantile = NULL, pred, cond = NULL, or
     } else {
 
       # collection with correctly specified quantile
-      qgam <- qdo(qgam, quantile)
+      qgam <- qgam::qdo(qgam, quantile)
 
     }
 
@@ -234,7 +236,7 @@ better_interaction_plot <- function(qgam, quantile = NULL, pred, cond = NULL, or
     if(is.null(color)){
       color <- c(rep("black", length(data$condition)))
     } else if (!is.null(color)){
-      color <- rep(color, 2)
+      color <- rep(color, length(data$condition)/2)
     }
 
     if(is.null(xlab)){

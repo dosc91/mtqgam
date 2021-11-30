@@ -2,7 +2,7 @@
 #'
 #' @description \code{better_smooth_plot} creates a smooth plot with confidence intervals using \code{ggplot2}. It basically is a wrapper for the base \code{plot} function.
 #'
-#' @usage better_parametric_plot(
+#' @usage better_smooth_plot(
 #'   qgam,
 #'   quantile = NULL,
 #'   pred,
@@ -36,17 +36,19 @@
 #' @examples
 #'
 #' # using a single qgam extracted from an mqgam object OR fitted with qgam::qgam
-#' better_smooth_plot(qgam = tmp.x.1,
-#'   pred = "PIT")
+#' better_smooth_plot(qgam = mtqgam_qgam,
+#'   pred = "numeric_2")
 #'
 #' # using a qgam that is part of an mqgam object
-#' better_smooth_plot(qgam = x.qgams,
+#' library(qgam)
+#'
+#' better_smooth_plot(qgam = mtqgam_mqgam,
 #'   quantile = 0.5,
-#'   pred = "PIT")
+#'   pred = "numeric_2")
 #'
 #' # combining better_smooth_plot with ggplot2
-#' better_smooth_plot(qgam = tmp.x.1,
-#'   pred = "PIT") +
+#' better_smooth_plot(qgam = mtqgam_qgam,
+#'   pred = "numeric_2") +
 #'   theme_void() +
 #'   labs(subtitle = "This is a subtitle")
 #'
@@ -81,7 +83,7 @@ better_smooth_plot <- function(qgam, quantile = NULL, pred, smooth_term = NULL, 
     } else {
 
       # collection with correctly specified quantile
-      qgam <- qdo(qgam, quantile)
+      qgam <- qgam::qdo(qgam, quantile)
 
     }
 
@@ -112,7 +114,7 @@ better_smooth_plot <- function(qgam, quantile = NULL, pred, smooth_term = NULL, 
   }
 
   if(is.na(number)){
-    stop("Please specify a parametric predictor which is part of your QGAM model.")
+    stop("Please specify a smooth which is part of your QGAM model.")
   }
 
   x <- bad_plot[[number]][["x"]]
