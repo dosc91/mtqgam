@@ -4,26 +4,28 @@
 \alias{extract_y}
 \title{Extract y coordinates of time-normalized mouse-tracking data}
 \usage{
-extract_x(
-  tn_data,
+extract_y(
+  mousetrap,
   ID_column,
   timestamps,
   verbose = TRUE)
 }
 \arguments{
-\item{tn_data}{The time-normalized mouse-tracking data. Can be extracted from the \code{mousetrap} object via \code{df$tn_trajectories}.}
+\item{mousetrap}{A \code{mousetrap} object containing time-normalized data (commonly achieved using mousetrap::mt_time_normalize).}
 
-\item{ID_column}{To maintain identification of individual trials, specify your ID variable. It must be part of \code{tn_data}. This can be achieved via \code{tn_data$ID <- df$data$ID}.}
+\item{tn_data}{\emph{obsolete}: Specify \code{mousetrap} instead. For now, \code{tn_data} remains useable. It will be depricated in due time. \code{tn_data} is the time-normalized mouse-tracking data. Can be extracted from the \code{mousetrap} object via \code{df$tn_trajectories}.}
+
+\item{ID_column}{To maintain identification of individual trials, specify your ID variable. In older versions, this had to be part of \code{tn_data}.}
 
 \item{timestamps}{Specify the number of timestamps you have used for time-normalizing.}
 
-\item{verbose}{If \code{true} (which is the default), a progress bar is displayed.}
+\item{verbose}{If \code{TRUE} (which is the default), a progress bar is displayed.}
 }
 \value{
 A data frame.
 \itemize{
 \item \code{key} - Numbered coordinates per mouse-track ID.
-\item \code{value} - The coordinate value.
+\item \code{value} - The y coordinate value.
 \item \code{ID} - Mouse-track IDs.
 }
 }
@@ -31,16 +33,12 @@ A data frame.
 \code{extract_y} extracts the y coordinates from a time-normalized \code{mousetrap} object.
 }
 \examples{
-# extract time-normalized data
-tn_tracks <- as.data.frame(mt_data$tn_trajectories)
+y_data <- extract_y(mousetrap = mtqgam_mousetrap,
+  ID_column = "ID",
+  timestamps = 100,
+  verbose = FALSE)
 
-# add ID columns
-tn_tracks$ID <- mt_data$data$ID
-
-# use function
-extract_y(tn_data = tn_tracks,
-ID_column = tn_tracks$ID,
-timestamps = 140)
+head(y_data)
 
 }
 \references{

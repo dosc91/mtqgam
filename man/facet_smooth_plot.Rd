@@ -4,7 +4,7 @@
 \alias{facet_smooth_plot}
 \title{Plot a multi-panel plot of a smooth predictor across multiple QGAMs in a MQGAM}
 \usage{
-better_smooth_plot(
+facet_smooth_plot(
   qgam,
   pred,
   ncol = 1,
@@ -46,12 +46,12 @@ A ggplot object.
 \examples{
 
 # basic example
-facet_smooth_plot(qgam = mqgams_x,
-  pred = "order")
+facet_smooth_plot(qgam = mtqgam_mqgam,
+  pred = "numeric_2")
 
 # combining facet_smooth_plot with ggplot2
-facet_smooth_plot(qgam = mqgams_x,
-  pred = "order") +
+facet_smooth_plot(qgam = mtqgam_mqgam,
+  pred = "numeric_2") +
   theme_void() +
   labs(subtitle = "This is a subtitle")
 

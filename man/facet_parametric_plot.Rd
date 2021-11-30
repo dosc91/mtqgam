@@ -4,7 +4,7 @@
 \alias{facet_parametric_plot}
 \title{Plot a multi-panel plot of a parametric predictor across multiple QGAMs in a MQGAM}
 \usage{
-better_parametric_plot(
+facet_parametric_plot(
   qgam,
   pred,
   cond = NULL,
@@ -15,7 +15,7 @@ better_parametric_plot(
   ylab = NULL,
   scales = "free",
   size = 0.5,
-  color = c("red", "blue"),
+  color = NULL,
   alpha = 1)
 }
 \arguments{
@@ -52,12 +52,12 @@ A ggplot object.
 \examples{
 
 # basic example
-facet_parametric_plot(qgam = mqgams_x,
-  pred = "Condition")
+facet_parametric_plot(qgam = mtqgam_mqgam,
+  pred = "factor_3")
 
 # combining facet_parametric_plot with ggplot2
-facet_parametric_plot(qgam = mqgams_x,
-  pred = "Condition") +
+facet_parametric_plot(qgam = mtqgam_mqgam,
+  pred = "factor_3") +
   theme_void() +
   labs(subtitle = "This is a subtitle")
 

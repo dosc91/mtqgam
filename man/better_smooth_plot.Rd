@@ -4,7 +4,7 @@
 \alias{better_smooth_plot}
 \title{Plot better plots of smooth predictors in QGAMs}
 \usage{
-better_parametric_plot(
+better_smooth_plot(
   qgam,
   quantile = NULL,
   pred,
@@ -48,17 +48,19 @@ A ggplot object.
 \examples{
 
 # using a single qgam extracted from an mqgam object OR fitted with qgam::qgam
-better_smooth_plot(qgam = tmp.x.1,
-  pred = "PIT")
+better_smooth_plot(qgam = mtqgam_qgam,
+  pred = "numeric_2")
 
 # using a qgam that is part of an mqgam object
-better_smooth_plot(qgam = x.qgams,
+library(qgam)
+
+better_smooth_plot(qgam = mtqgam_mqgam,
   quantile = 0.5,
-  pred = "PIT")
+  pred = "numeric_2")
 
 # combining better_smooth_plot with ggplot2
-better_smooth_plot(qgam = tmp.x.1,
-  pred = "PIT") +
+better_smooth_plot(qgam = mtqgam_qgam,
+  pred = "numeric_2") +
   theme_void() +
   labs(subtitle = "This is a subtitle")
 

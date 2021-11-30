@@ -10,7 +10,7 @@ better_interaction_plot(
   pred,
   cond,
   order,
-  ncol,
+  ncol = 1,
   type,
   xlab = NULL,
   ylab = NULL,
@@ -62,57 +62,57 @@ The underlying functions are similar to \code{better_parametric_plot} and \code{
 ### examples for factor:factor interactions
 
 # using a single qgam extracted from an mqgam object OR fitted with qgam::qgam
-better_interaction_plot(qgam = qgam,
-  pred = "correct",
-  cond = "Condition")
+better_interaction_plot(qgam = mtqgam_qgam,
+  pred = "factor_3",
+  cond = "factor_2")
 
 # using a qgam that is part of an mqgam object
-better_interaction_plot(qgam = x.qgams,
+better_interaction_plot(qgam = mtqgam_mqgam,
   quantile = 0.5,
-  pred = "correct",
-  cond = "Condition")
+  pred = "factor_3",
+  cond = "factor_2")
 
 # specifying color
-better_interaction_plot(qgam = qgam,
-  pred = "correct",
-  cond = "Condition",
+better_interaction_plot(qgam = mtqgam_qgam,
+  pred = "factor_3",
+  cond = "factor_2",
   color = c("blue", "purple"))
 
 # combining better_interaction_plot with ggplot2
-better_interaction_plot(qgam = qgam,
-  pred = "correct",
-  cond = "Condition") +
+better_interaction_plot(qgam = mtqgam_qgam,
+  pred = "factor_3",
+  cond = "factor_2") +
   theme_void() +
   labs(subtitle = "This is a subtitle")
 
 ### examples for numeric:factor interactions
 
 # using a single qgam extracted from an mqgam object OR fitted with qgam::qgam
-better_interaction_plot(qgam = qgam,
-  pred = "PIT",
-  cond = "Condition")
+better_interaction_plot(qgam = mtqgam_qgam,
+  pred = "numeric_2",
+  cond = "factor_1")
 
-better_interaction_plot(qgam = qgam,
-  pred = "PIT",
-  cond = "Condition",
+better_interaction_plot(qgam = mtqgam_qgam,
+  pred = "numeric_2",
+  cond = "factor_1",
   type = "no_facet")
 
 # specifying color
-better_interaction_plot(qgam = qgam,
-  pred = "PIT",
-  cond = "Condition",
+better_interaction_plot(qgam = mtqgam_qgam,
+  pred = "numeric_2",
+  cond = "factor_1",
   color = "blue", "purple")
 
 # using a qgam that is part of an mqgam object
-better_interaction_plot(qgam = x.qgams,
+better_interaction_plot(qgam = mtqgam_mqgam,
   quantile = 0.5,
-  pred = "PIT",
-  cond = "Condition")
+  pred = "numeric_2",
+  cond = "factor_1")
 
 # combining better_interaction_plot with ggplot2
-better_interaction_plot(qgam = qgam,
-  pred = "correct",
-  cond = "Condition") +
+better_interaction_plot(qgam = mtqgam_qgam,
+  pred = "numeric_2",
+  cond = "factor_1") +
   theme_void() +
   labs(subtitle = "This is a subtitle")
 
