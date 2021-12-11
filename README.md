@@ -39,7 +39,7 @@ Please note that in order to use the plot functions of `mtqgam`, `ggplot2` is lo
 
 Please cite the package as follows:
 
-Schmitz, Dominic. (2021). mtqgam: Mouse-Tracking Data in QGAMs. R package version 0.4. URL: https://github.com/dosc91/mtqgam
+Schmitz, Dominic. (2021). mtqgam: Mouse-Tracking Data in QGAMs. R package version 0.5.1. URL: https://github.com/dosc91/mtqgam
 
 The following packages are made use of in the `mtqgam` package:
 
