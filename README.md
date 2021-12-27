@@ -1,4 +1,4 @@
-# mtqgam <img src='https://dominicschmitz.com/packages/mtqgam_logo2.png' align="right" height="138" />
+# mtqgam <img src='https://dominicschmitz.com/wp-content/uploads/2021/11/mtqgam_logo2.png' align="right" height="138" />
 
 <!-- badges: start -->
 ![](https://img.shields.io/badge/version-0.5.2-FFA70B.svg)
