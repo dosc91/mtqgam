@@ -1,6 +1,6 @@
 Package: mtqgam
 Title: Mouse-Tracking Data in QGAMs
-Version: 0.5.1
+Version: 0.5.2
 Authors@R: 
     person(given = "Dominic",
            family = "Schmitz",
