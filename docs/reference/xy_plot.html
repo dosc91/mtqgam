@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot better plots of parametric predictors in QGAMs — better_parametric_plot • mtqgam</title>
+<title>Plot XY plots of parametric predictors in QGAMs — xy_plot • mtqgam</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,10 @@
 
 
 
-<meta property="og:title" content="Plot better plots of parametric predictors in QGAMs — better_parametric_plot" />
-<meta property="og:description" content="better_parametric_plot creates a point plot with confidence interval ranges using ggplot2. It basically is a wrapper for itsadug's
-plot_parametric function." />
+<meta property="og:title" content="Plot XY plots of parametric predictors in QGAMs — xy_plot" />
+<meta property="og:description" content="xy_plot creates a point plot with confidence interval ranges using ggplot2. It combines the model estimates for the same predictor
+in two (sets of) QGAMs, i.e. it displays estimates of X and Y coordinates simultaneously in a combined plot.
+It makes use of mtqgam's better_parametric_plot and thus outputs the same information in your console." />
 
 
 
@@ -107,27 +108,30 @@ plot_parametric function." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot better plots of parametric predictors in QGAMs</h1>
+    <h1>Plot XY plots of parametric predictors in QGAMs</h1>
     
-    <div class="hidden name"><code>better_parametric_plot.Rd</code></div>
+    <div class="hidden name"><code>xy_plot.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>better_parametric_plot</code> creates a point plot with confidence interval ranges using <code>ggplot2</code>. It basically is a wrapper for <code>itsadug</code>'s
-<code>plot_parametric</code> function.</p>
+    <p><code>xy_plot</code> creates a point plot with confidence interval ranges using <code>ggplot2</code>. It combines the model estimates for the same predictor
+in two (sets of) QGAMs, i.e. it displays estimates of X and Y coordinates simultaneously in a combined plot.
+It makes use of <code>mtqgam</code>'s <code>better_parametric_plot</code> and thus outputs the same information in your console.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>better_parametric_plot</span><span class='op'>(</span>
-  <span class='va'>qgam</span>,
+    <pre class="usage"><span class='fu'>xy_plot</span><span class='op'>(</span>
+  <span class='va'>qgam_x</span>,
+  <span class='va'>qgam_y</span>,
   quantile <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>pred</span>,
   cond <span class='op'>=</span> <span class='cn'>NULL</span>,
   print.summary <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  plot.old <span class='op'>=</span> <span class='cn'>FALSE</span>,
   order <span class='op'>=</span> <span class='cn'>NULL</span>,
-  xlab <span class='op'>=</span> <span class='st'>"fit"</span>,
-  ylab <span class='op'>=</span> <span class='cn'>NULL</span>,
-  size <span class='op'>=</span> <span class='fl'>0.5</span>,
+  ncol <span class='op'>=</span> <span class='fl'>2</span>,
+  xlab <span class='op'>=</span> <span class='st'>"X coordinates"</span>,
+  ylab <span class='op'>=</span> <span class='st'>"Y coordinates"</span>,
+  scales <span class='op'>=</span> <span class='st'>"free"</span>,
+  size <span class='op'>=</span> <span class='fl'>3</span>,
   color <span class='op'>=</span> <span class='cn'>NULL</span>,
   alpha <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
 
@@ -135,8 +139,12 @@ plot_parametric function." />
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>qgam</th>
-      <td><p>A qgam object created with <code><a href='https://rdrr.io/pkg/qgam/man/qgam.html'>qgam::qgam</a></code> or extracted from a <code><a href='https://rdrr.io/pkg/qgam/man/mqgam.html'>qgam::mqgam</a></code> object, or a collection of qgams created with <code><a href='https://rdrr.io/pkg/qgam/man/mqgam.html'>qgam::mqgam</a></code>.</p></td>
+      <th>qgam_x</th>
+      <td><p>The estimates plotted on the X axis. A qgam object created with <code><a href='https://rdrr.io/pkg/qgam/man/qgam.html'>qgam::qgam</a></code> or extracted from a <code><a href='https://rdrr.io/pkg/qgam/man/mqgam.html'>qgam::mqgam</a></code> object, or a collection of qgams created with <code><a href='https://rdrr.io/pkg/qgam/man/mqgam.html'>qgam::mqgam</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>qgam_y</th>
+      <td><p>The estimates plotted on the Y axis. A qgam object created with <code><a href='https://rdrr.io/pkg/qgam/man/qgam.html'>qgam::qgam</a></code> or extracted from a <code><a href='https://rdrr.io/pkg/qgam/man/mqgam.html'>qgam::mqgam</a></code> object, or a collection of qgams created with <code><a href='https://rdrr.io/pkg/qgam/man/mqgam.html'>qgam::mqgam</a></code>.</p></td>
     </tr>
     <tr>
       <th>quantile</th>
@@ -155,12 +163,12 @@ plot_parametric function." />
       <td><p>Logical: whether or not to print summary.</p></td>
     </tr>
     <tr>
-      <th>plot.old</th>
-      <td><p>Plot the original <code>plot_parametric</code> as well.</p></td>
-    </tr>
-    <tr>
       <th>order</th>
       <td><p>Specify the order with which the levels given in <code>pred</code> should be plotted.</p></td>
+    </tr>
+    <tr>
+      <th>ncol</th>
+      <td><p>The number of columns of the multi-panel plot.</p></td>
     </tr>
     <tr>
       <th>xlab</th>
@@ -169,6 +177,10 @@ plot_parametric function." />
     <tr>
       <th>ylab</th>
       <td><p>The y-axis label.</p></td>
+    </tr>
+    <tr>
+      <th>scales</th>
+      <td><p>Should scales be free (<code>"free"</code>, the default) or fixed (<code>"fixed"</code>)?</p></td>
     </tr>
     <tr>
       <th>size</th>
@@ -196,35 +208,6 @@ plot_parametric function." />
 
     <p>D. Schmitz</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'></span>
-<span class='r-in'><span class='co'># using a single qgam extracted from an mqgam object OR fitted with qgam::qgam</span></span>
-<span class='r-in'><span class='fu'>better_parametric_plot</span><span class='op'>(</span>qgam <span class='op'>=</span> <span class='va'>mtqgam_qgam</span>,</span>
-<span class='r-in'>  pred <span class='op'>=</span> <span class='st'>"factor_3"</span><span class='op'>)</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>i</span> Plotting predictor factor_3 with default order of predictor levels.</span>
-<span class='r-plt img'><img src='better_parametric_plot-1.png' alt='' width='700' height='433' /></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># using a qgam that is part of an mqgam object</span></span>
-<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>qgam</span><span class='op'>)</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: mgcv</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: nlme</span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> This is mgcv 1.8-33. For overview type 'help("mgcv-package")'.</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='fu'>better_parametric_plot</span><span class='op'>(</span>qgam <span class='op'>=</span> <span class='va'>mtqgam_mqgam</span>,</span>
-<span class='r-in'>  quantile <span class='op'>=</span> <span class='fl'>0.5</span>,</span>
-<span class='r-in'>  pred <span class='op'>=</span> <span class='st'>"factor_3"</span><span class='op'>)</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>i</span> Plotting predictor factor_3 with default order of predictor levels.</span>
-<span class='r-plt img'><img src='better_parametric_plot-2.png' alt='' width='700' height='433' /></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># combining better_parametric_plot with ggplot2</span></span>
-<span class='r-in'><span class='fu'>better_parametric_plot</span><span class='op'>(</span>qgam <span class='op'>=</span> <span class='va'>mtqgam_qgam</span>,</span>
-<span class='r-in'>  pred <span class='op'>=</span> <span class='st'>"factor_3"</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span class='r-in'>  <span class='fu'>theme_void</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span class='r-in'>  <span class='fu'>labs</span><span class='op'>(</span>subtitle <span class='op'>=</span> <span class='st'>"This is a subtitle"</span><span class='op'>)</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>i</span> Plotting predictor factor_3 with default order of predictor levels.</span>
-<span class='r-plt img'><img src='better_parametric_plot-3.png' alt='' width='700' height='433' /></span>
-<span class='r-in'></span>
-</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
