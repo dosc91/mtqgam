@@ -1,10 +1,10 @@
-#' Plot XY plots of parametric predictors in QGAMs
+#' Plot XY plots of parametric predictor interactions in QGAMs
 #'
-#' @description \code{xy_plot} creates a point plot with confidence interval ranges using \code{ggplot2}. It combines the model estimates for the same predictor
+#' @description \code{xy_interaction_plot} creates a point plot with confidence interval ranges using \code{ggplot2}. It combines the model estimates for the same predictor
 #' in two (sets of) QGAMs, i.e. it displays estimates of X and Y coordinates simultaneously in a combined plot.
 #' It makes use of \code{mtqgam}'s \code{better_parametric_plot} and thus outputs the same information in your console.
 #'
-#' @usage xy_plot(
+#' @usage xy_interaction_plot(
 #'   qgam_x,
 #'   qgam_y,
 #'   quantile = NULL,
@@ -46,31 +46,35 @@
 #' @examples
 #'
 #' # using a single qgam extracted from an mqgam object OR fitted with qgam::qgam
-#' xy_plot(qgam_x = mtqgam_qgam,
+#' xy_interaction_plot(qgam_x = mtqgam_qgam,
 #' qgam_y = mtqgam_qgam,
-#' pred = "factor_3")
+#' pred = "factor_2",
+#' cond = "factor_3")
 #'
 #' # using a qgam that is part of an mqgam object
-#' xy_plot(qgam_x = mtqgam_mqgam,
+#' xy_interaction_plot(qgam_x = mtqgam_mqgam,
 #' qgam_y = mtqgam_mqgam,
-#' pred = "factor_3")
+#' pred = "factor_2",
+#' cond = "factor_3")
 #'
 #' # specifying color
-#' xy_plot(qgam_x = mtqgam_mqgam,
+#' xy_interaction_plot(qgam_x = mtqgam_mqgam,
 #' qgam_y = mtqgam_mqgam,
-#' pred = "factor_3",
-#' color = c("blue", "purple"))
+#' pred = "factor_2",
+#' cond = "factor_3",
+#' color = c("blue", "purple", "green", "yellow", "pink"))
 #'
 #' # combining better_interaction_plot with ggplot2
-#' xy_plot(qgam_x = mtqgam_mqgam,
+#' xy_interaction_plot(qgam_x = mtqgam_mqgam,
 #' qgam_y = mtqgam_mqgam,
-#' pred = "factor_3") +
+#' pred = "factor_2",
+#' cond = "factor_3") +
 #' theme_void() +
 #' labs(subtitle = "This is a subtitle")
 #'
 #' @export
 
-xy_plot <- function(qgam_x, qgam_y, quantile = NULL, pred, cond = NULL, print.summary = F, order = NULL, ncol = 2, xlab = "X coordinates", ylab = "Y coordinates", scales = "free", size = 3, color = NULL, alpha = 1){
+xy_interaction_plot <- function(qgam_x, qgam_y, quantile = NULL, pred, cond = NULL, print.summary = F, order = NULL, ncol = 2, xlab = "X coordinates", ylab = "Y coordinates", scales = "free", size = 3, color = NULL, alpha = 1){
 
   require(ggplot2)
 
@@ -117,30 +121,72 @@ xy_plot <- function(qgam_x, qgam_y, quantile = NULL, pred, cond = NULL, print.su
 
   # if mqgam
   if(length(qgam_x) <= 10){
-    R.devices::suppressGraphics({
-      xplot <- mtqgam::facet_parametric_plot(qgam_x, pred = pred, cond = cond, print.summary = print.summary, order = order)
-      yplot <- mtqgam::facet_parametric_plot(qgam_y, pred = pred, cond = cond, print.summary = print.summary, order = order)
-    })
+
+    quantiles <- names(qgam_x[["fit"]])
+
+    # X
+    data_list_x <- vector(mode = "list")
+
+    for (i in 1:length(quantiles)) {
+
+      R.devices::suppressGraphics({
+
+        datax <- better_interaction_plot(qgam_x, pred = pred, cond = cond, quantile = quantiles[i])$data
+
+      })
+
+      datax$quantile <- quantiles[i]
+
+      data_list_x[[i]] <- datax
+
+    }
+
+    xdata <- do.call(rbind, data_list_x)
+
+    # Y
+    data_list_y <- vector(mode = "list")
+
+    for (i in 1:length(quantiles)) {
+
+      R.devices::suppressGraphics({
+
+        datay <- better_interaction_plot(qgam_y, pred = pred, cond = cond, quantile = quantiles[i])$data
+
+      })
+
+      datay$quantile <- quantiles[i]
+
+      data_list_y[[i]] <- datay
+
+    }
+
+    ydata <- do.call(rbind, data_list_y)
+
+    names(xdata)[names(xdata) == "fit"] <- "fit_x"
+    names(ydata)[names(ydata) == "fit"] <- "fit_y"
+
+    names(xdata)[names(xdata) == "CI"] <- "CI_x"
+    names(ydata)[names(ydata) == "CI"] <- "CI_y"
+
+    data <- cbind(xdata, ydata)
+
+    data <- data[,1:7]
+
   } else {
-    xplot <- mtqgam::better_parametric_plot(qgam_x, pred = pred, quantile = quantile, cond = cond, print.summary = print.summary, order = order)
-    yplot <- mtqgam::better_parametric_plot(qgam_y, pred = pred, quantile = quantile, cond = cond, print.summary = print.summary, order = order)
-  }
 
-  xdata <- xplot$data
-  ydata <- yplot$data
+    xdata <- better_interaction_plot(qgam_x, pred = pred, cond = cond, quantile = quantile, order = order)$data
+    ydata <- better_interaction_plot(qgam_y, pred = pred, cond = cond, quantile = quantile, order = order)$data
 
-  names(xdata)[names(xdata) == "fit"] <- "fit_x"
-  names(ydata)[names(ydata) == "fit"] <- "fit_y"
+    names(xdata)[names(xdata) == "fit"] <- "fit_x"
+    names(ydata)[names(ydata) == "fit"] <- "fit_y"
 
-  names(xdata)[names(xdata) == "CI"] <- "CI_x"
-  names(ydata)[names(ydata) == "CI"] <- "CI_y"
+    names(xdata)[names(xdata) == "CI"] <- "CI_x"
+    names(ydata)[names(ydata) == "CI"] <- "CI_y"
 
-  data <- cbind(xdata, ydata)
+    data <- cbind(xdata, ydata)
 
-  if(length(qgam_x) <= 10){
-    data <- data[,1:6]
-  } else {
-    data <- data[,1:5]
+    data <- data[,1:7]
+
   }
 
   # plot
@@ -152,9 +198,9 @@ xy_plot <- function(qgam_x, qgam_y, quantile = NULL, pred, cond = NULL, print.su
   if(length(qgam_x) <= 10){
 
     plot <- ggplot(data = data) +
-      geom_errorbar(aes(x=fit_x, ymin=fit_y-CI_y, ymax=fit_y+CI_y), width = 0) +
-      geom_errorbarh(aes(y=fit_y, xmin=fit_x-CI_x, xmax=fit_x+CI_x), height = 0) +
-      geom_point(aes(x = fit_x, y = fit_y, color = levels), size = size, alpha = alpha) +
+      geom_errorbar(aes(x=fit_x, ymin=fit_y-CI_y, ymax=fit_y+CI_y, linetype = condition), width = 0) +
+      geom_errorbarh(aes(y=fit_y, xmin=fit_x-CI_x, xmax=fit_x+CI_x, linetype = condition), height = 0) +
+      geom_point(aes(x = fit_x, y = fit_y, color = levels, shape = condition), size = size, alpha = alpha) +
       scale_color_manual(values = color) +
       facet_wrap(. ~ quantile, ncol = ncol, scales = scales) +
       theme_bw() +
@@ -162,16 +208,16 @@ xy_plot <- function(qgam_x, qgam_y, quantile = NULL, pred, cond = NULL, print.su
             plot.subtitle = element_text(hjust = 0.5),
             legend.position = "top",
             strip.background = element_rect(fill="white")) +
-      guides(color = guide_legend(title=pred)) +
+      guides(color = guide_legend(title=pred), shape = guide_legend(title=cond), linetype = guide_legend(title=cond)) +
       xlab(xlab) +
       ylab(ylab)
 
   } else {
 
     plot <- ggplot(data = data) +
-      geom_errorbar(aes(x=fit_x, ymin=fit_y-CI_y, ymax=fit_y+CI_y), width = 0) +
-      geom_errorbarh(aes(y=fit_y, xmin=fit_x-CI_x, xmax=fit_x+CI_x), height = 0) +
-      geom_point(aes(x = fit_x, y = fit_y, color = levels), size = size, alpha = alpha) +
+      geom_errorbar(aes(x=fit_x, ymin=fit_y-CI_y, ymax=fit_y+CI_y, linetype = condition), width = 0) +
+      geom_errorbarh(aes(y=fit_y, xmin=fit_x-CI_x, xmax=fit_x+CI_x, linetype = condition), height = 0) +
+      geom_point(aes(x = fit_x, y = fit_y, color = levels, shape = condition), size = size, alpha = alpha) +
       scale_color_manual(values = color) +
       theme_bw() +
       theme(plot.title = element_text(hjust = 0.5),
@@ -185,4 +231,5 @@ xy_plot <- function(qgam_x, qgam_y, quantile = NULL, pred, cond = NULL, print.su
   }
 
   return(plot)
+
 }

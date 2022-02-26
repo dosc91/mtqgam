@@ -18,7 +18,8 @@
 #'   size = 0.5,
 #'   fill = NULL,
 #'   color = NULL,
-#'   alpha = 1)
+#'   alpha = 1,
+#'   names = NULL)
 #'
 #' @param qgam A qgam object created with \code{qgam::qgam} or extracted from a \code{qgam::mqgam} object, or a collection of qgams created with \code{qgam::mqgam}.
 #' @param quantile If \code{qgam} is a collection of qgam models, specify the quantile you are interested in. Not meaningful for single qgam objects.
@@ -34,6 +35,7 @@
 #' @param fill Color argument for the ggplot object; specifies the color of the confidence interval. This is only meaningful for interaction plots of numeric variables.
 #' @param color Color argument for the ggplot object; specifies the color of the lines and dots. For interaction plots of factors, this must be a vector of colors with a length equal to the combinations of factor levels. For interaction plots of numeric variables and factors, this is a single color.
 #' @param alpha Alpha argument for the ggplot object; specifies the transparency of the confidence interval for interaction plots of numeric variables, and specifies the transparency of point and whiskers for interaction plots of interaction plots for factors. The value of \code{alpha} is changed to \code{0.5} by default for \code{no_facet} plots.
+#' @param names Strings used as facet labels.
 #'
 #' @return A ggplot object.
 #'
@@ -63,6 +65,12 @@
 #'   pred = "factor_3",
 #'   cond = "factor_2",
 #'   color = c("blue", "purple"))
+#'
+#' # specifying facet labels
+#' better_interaction_plot(qgam = mtqgam_qgam,
+#'   pred = "factor_2",
+#'   cond = "factor_3",
+#'   names = c("facet A", "2nd facet"))
 #'
 #' # combining better_interaction_plot with ggplot2
 #' better_interaction_plot(qgam = mtqgam_qgam,
@@ -104,7 +112,7 @@
 #'
 #' @export
 
-better_interaction_plot <- function(qgam, quantile = NULL, pred, cond = NULL, order = NULL, ncol = 1, type = NULL, xlab = NULL, ylab = NULL, scales = NULL, size = 0.5, fill = NULL, color = NULL, alpha = 1){
+better_interaction_plot <- function(qgam, quantile = NULL, pred, cond = NULL, order = NULL, ncol = 1, type = NULL, xlab = NULL, ylab = NULL, scales = NULL, size = 0.5, fill = NULL, color = NULL, alpha = 1, names = NULL){
 
   require(ggplot2)
 
@@ -219,19 +227,40 @@ better_interaction_plot <- function(qgam, quantile = NULL, pred, cond = NULL, or
 
     name <- names(pred_list)
 
-    facet_names <- vector(mode = "list")
 
-    for (a in 1:length(levels(data$condition))) {
+    if(is.null(names)){
 
-      label <- paste(paste(cond, "=="), levels(data$condition)[a])
+      facet_names <- vector(mode = "list")
 
-      facet_names[[a]] <- label
+      for (a in 1:length(levels(data$condition))) {
+
+        label <- paste(paste(cond, "=="), levels(data$condition)[a])
+
+        facet_names[[a]] <- label
+
+      }
+
+      facet_names <- do.call(c, facet_names)
+
+      names(facet_names) <- c(levels(data$condition))
+
+    }else{
+
+      facet_names <- vector(mode = "list")
+
+      for (a in 1:length(names)) {
+
+        label <- names[a]
+
+        facet_names[[a]] <- label
+
+      }
+
+      facet_names <- do.call(c, facet_names)
+
+      names(facet_names) <- c(levels(data$condition))
 
     }
-
-    facet_names <- do.call(c, facet_names)
-
-    names(facet_names) <- c(levels(data$condition))
 
     if(is.null(color)){
       color <- c(rep("black", length(data$condition)))
@@ -319,11 +348,14 @@ better_interaction_plot <- function(qgam, quantile = NULL, pred, cond = NULL, or
 
     if(type == "facet"){
 
+
+    if(is.null(names)){
+
       facet_names <- vector(mode = "list")
 
-      for (a in 1:length(levels(data$contrast))) {
+      for (a in 1:length(levels(data$condition))) {
 
-        label <- paste(paste(cond, "=="), levels(data$contrast)[a])
+        label <- paste(paste(cond, "=="), levels(data$condition)[a])
 
         facet_names[[a]] <- label
 
@@ -331,7 +363,25 @@ better_interaction_plot <- function(qgam, quantile = NULL, pred, cond = NULL, or
 
       facet_names <- do.call(c, facet_names)
 
-      names(facet_names) <- c(levels(data$contrast))
+      names(facet_names) <- c(levels(data$condition))
+
+    }else{
+
+      facet_names <- vector(mode = "list")
+
+      for (a in 1:length(names)) {
+
+        label <- names[a]
+
+        facet_names[[a]] <- label
+
+      }
+
+      facet_names <- do.call(c, facet_names)
+
+      names(facet_names) <- c(levels(data$condition))
+
+    }
 
       if(is.null(scales)){
         ylab = "fixed"
