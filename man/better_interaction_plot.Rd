@@ -18,7 +18,8 @@ better_interaction_plot(
   size = 0.5,
   fill = NULL,
   color = NULL,
-  alpha = 1)
+  alpha = 1,
+  names = NULL)
 }
 \arguments{
 \item{qgam}{A qgam object created with \code{qgam::qgam} or extracted from a \code{qgam::mqgam} object, or a collection of qgams created with \code{qgam::mqgam}.}
@@ -48,6 +49,8 @@ better_interaction_plot(
 \item{color}{Color argument for the ggplot object; specifies the color of the lines and dots. For interaction plots of factors, this must be a vector of colors with a length equal to the combinations of factor levels. For interaction plots of numeric variables and factors, this is a single color.}
 
 \item{alpha}{Alpha argument for the ggplot object; specifies the transparency of the confidence interval for interaction plots of numeric variables, and specifies the transparency of point and whiskers for interaction plots of interaction plots for factors. The value of \code{alpha} is changed to \code{0.5} by default for \code{no_facet} plots.}
+
+\item{names}{Strings used as facet labels.}
 }
 \value{
 A ggplot object.
@@ -77,6 +80,12 @@ better_interaction_plot(qgam = mtqgam_qgam,
   pred = "factor_3",
   cond = "factor_2",
   color = c("blue", "purple"))
+
+# specifying facet labels
+better_interaction_plot(qgam = mtqgam_qgam,
+  pred = "factor_2",
+  cond = "factor_3",
+  names = c("facet A", "2nd facet"))
 
 # combining better_interaction_plot with ggplot2
 better_interaction_plot(qgam = mtqgam_qgam,
