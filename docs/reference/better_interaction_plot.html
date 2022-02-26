@@ -133,7 +133,8 @@ The underlying functions are similar to <code>better_parametric_plot</code> and 
   size <span class='op'>=</span> <span class='fl'>0.5</span>,
   fill <span class='op'>=</span> <span class='cn'>NULL</span>,
   color <span class='op'>=</span> <span class='cn'>NULL</span>,
-  alpha <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
+  alpha <span class='op'>=</span> <span class='fl'>1</span>,
+  names <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -194,6 +195,10 @@ The underlying functions are similar to <code>better_parametric_plot</code> and 
       <th>alpha</th>
       <td><p>Alpha argument for the ggplot object; specifies the transparency of the confidence interval for interaction plots of numeric variables, and specifies the transparency of point and whiskers for interaction plots of interaction plots for factors. The value of <code>alpha</code> is changed to <code>0.5</code> by default for <code>no_facet</code> plots.</p></td>
     </tr>
+    <tr>
+      <th>names</th>
+      <td><p>Strings used as facet labels.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -216,8 +221,6 @@ The underlying functions are similar to <code>better_parametric_plot</code> and 
 <span class='r-in'><span class='fu'>better_interaction_plot</span><span class='op'>(</span>qgam <span class='op'>=</span> <span class='va'>mtqgam_qgam</span>,</span>
 <span class='r-in'>  pred <span class='op'>=</span> <span class='st'>"factor_3"</span>,</span>
 <span class='r-in'>  cond <span class='op'>=</span> <span class='st'>"factor_2"</span><span class='op'>)</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: ggplot2</span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>package 'ggplot2' was built under R version 4.0.5</span>
 <span class='r-plt img'><img src='better_interaction_plot-1.png' alt='' width='700' height='433' /></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># using a qgam that is part of an mqgam object</span></span>
@@ -234,13 +237,20 @@ The underlying functions are similar to <code>better_parametric_plot</code> and 
 <span class='r-in'>  color <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"blue"</span>, <span class='st'>"purple"</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-plt img'><img src='better_interaction_plot-3.png' alt='' width='700' height='433' /></span>
 <span class='r-in'></span>
+<span class='r-in'><span class='co'># specifying facet labels</span></span>
+<span class='r-in'><span class='fu'>better_interaction_plot</span><span class='op'>(</span>qgam <span class='op'>=</span> <span class='va'>mtqgam_qgam</span>,</span>
+<span class='r-in'>  pred <span class='op'>=</span> <span class='st'>"factor_2"</span>,</span>
+<span class='r-in'>  cond <span class='op'>=</span> <span class='st'>"factor_3"</span>,</span>
+<span class='r-in'>  names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"facet A"</span>, <span class='st'>"2nd facet"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='better_interaction_plot-4.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
 <span class='r-in'><span class='co'># combining better_interaction_plot with ggplot2</span></span>
 <span class='r-in'><span class='fu'>better_interaction_plot</span><span class='op'>(</span>qgam <span class='op'>=</span> <span class='va'>mtqgam_qgam</span>,</span>
 <span class='r-in'>  pred <span class='op'>=</span> <span class='st'>"factor_3"</span>,</span>
 <span class='r-in'>  cond <span class='op'>=</span> <span class='st'>"factor_2"</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span class='r-in'>  <span class='fu'>theme_void</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span class='r-in'>  <span class='fu'>labs</span><span class='op'>(</span>subtitle <span class='op'>=</span> <span class='st'>"This is a subtitle"</span><span class='op'>)</span></span>
-<span class='r-plt img'><img src='better_interaction_plot-4.png' alt='' width='700' height='433' /></span>
+<span class='r-plt img'><img src='better_interaction_plot-5.png' alt='' width='700' height='433' /></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>### examples for numeric:factor interactions</span></span>
 <span class='r-in'></span>
@@ -248,7 +258,7 @@ The underlying functions are similar to <code>better_parametric_plot</code> and 
 <span class='r-in'><span class='fu'>better_interaction_plot</span><span class='op'>(</span>qgam <span class='op'>=</span> <span class='va'>mtqgam_qgam</span>,</span>
 <span class='r-in'>  pred <span class='op'>=</span> <span class='st'>"numeric_2"</span>,</span>
 <span class='r-in'>  cond <span class='op'>=</span> <span class='st'>"factor_1"</span><span class='op'>)</span></span>
-<span class='r-plt img'><img src='better_interaction_plot-5.png' alt='' width='700' height='433' /></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in facet_names[[a]] &lt;- label:</span> attempt to select less than one element in integerOneIndex</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='fu'>better_interaction_plot</span><span class='op'>(</span>qgam <span class='op'>=</span> <span class='va'>mtqgam_qgam</span>,</span>
 <span class='r-in'>  pred <span class='op'>=</span> <span class='st'>"numeric_2"</span>,</span>
@@ -264,14 +274,14 @@ The underlying functions are similar to <code>better_parametric_plot</code> and 
 <span class='r-in'>  cond <span class='op'>=</span> <span class='st'>"factor_1"</span>,</span>
 <span class='r-in'>  color <span class='op'>=</span> <span class='st'>"blue"</span>, <span class='st'>"purple"</span><span class='op'>)</span></span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #BBBB00;'>!</span> The quantile argument is not meaningful for single QGAM objects. Plotting anyway.</span>
-<span class='r-plt img'><img src='better_interaction_plot-7.png' alt='' width='700' height='433' /></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in facet_names[[a]] &lt;- label:</span> attempt to select less than one element in integerOneIndex</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># using a qgam that is part of an mqgam object</span></span>
 <span class='r-in'><span class='fu'>better_interaction_plot</span><span class='op'>(</span>qgam <span class='op'>=</span> <span class='va'>mtqgam_mqgam</span>,</span>
 <span class='r-in'>  quantile <span class='op'>=</span> <span class='fl'>0.5</span>,</span>
 <span class='r-in'>  pred <span class='op'>=</span> <span class='st'>"numeric_2"</span>,</span>
 <span class='r-in'>  cond <span class='op'>=</span> <span class='st'>"factor_1"</span><span class='op'>)</span></span>
-<span class='r-plt img'><img src='better_interaction_plot-8.png' alt='' width='700' height='433' /></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in facet_names[[a]] &lt;- label:</span> attempt to select less than one element in integerOneIndex</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># combining better_interaction_plot with ggplot2</span></span>
 <span class='r-in'><span class='fu'>better_interaction_plot</span><span class='op'>(</span>qgam <span class='op'>=</span> <span class='va'>mtqgam_qgam</span>,</span>
@@ -279,7 +289,7 @@ The underlying functions are similar to <code>better_parametric_plot</code> and 
 <span class='r-in'>  cond <span class='op'>=</span> <span class='st'>"factor_1"</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span class='r-in'>  <span class='fu'>theme_void</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span class='r-in'>  <span class='fu'>labs</span><span class='op'>(</span>subtitle <span class='op'>=</span> <span class='st'>"This is a subtitle"</span><span class='op'>)</span></span>
-<span class='r-plt img'><img src='better_interaction_plot-9.png' alt='' width='700' height='433' /></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in facet_names[[a]] &lt;- label:</span> attempt to select less than one element in integerOneIndex</span>
 <span class='r-in'></span>
 </pre>
   </div>
