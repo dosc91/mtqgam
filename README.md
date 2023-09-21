@@ -1,7 +1,7 @@
 # mtqgam <img src='https://dominicschmitz.com/wp-content/uploads/2021/11/mtqgam_logo2.png' align="right" height="138" />
 
 <!-- badges: start -->
-![](https://img.shields.io/badge/version-0.5.3-FFA70B.svg)
+![](https://img.shields.io/badge/version-0.5.4-FFA70B.svg)
 ![](https://img.shields.io/github/last-commit/dosc91/mtqgam)
 <!-- badges: end -->
 

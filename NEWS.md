@@ -1,3 +1,11 @@
+# Version 0.5.4
+
+A new function has been added:
+
+- [pairwise_comparison](../reference/pairwise_comparison.html) - Pairwise Tukey Comparisons
+
+This function computes pairwise Tukey comparisons for any combination of variables in a given QGAM.
+
 # Version 0.5.3
 
 A new function has been added. The function is currently in its alpha phase:

@@ -1,6 +1,6 @@
 Package: mtqgam
 Title: Mouse-Tracking Data in QGAMs
-Version: 0.5.3
+Version: 0.5.4
 Authors@R: 
     person(given = "Dominic",
            family = "Schmitz",
@@ -12,14 +12,15 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Imports: 
     cli,
     ggplot2,
     glue,
     qgam,
     R.devices,
-    tidyr
+    tidyr,
+	emmeans
 Suggests: 
     rmarkdown,
     knitr,
