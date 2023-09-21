@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">mtqgam</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.4</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -63,12 +59,11 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
-<div id="mtqgam-" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#mtqgam-" class="anchor"></a>mtqgam <img src="https://dominicschmitz.com/wp-content/uploads/2021/11/mtqgam_logo2.png" align="right" height="138">
+<div class="section level1">
+<div class="page-header"><h1 id="mtqgam-">mtqgam <img src="https://dominicschmitz.com/wp-content/uploads/2021/11/mtqgam_logo2.png" align="right" height="138"><a class="anchor" aria-label="anchor" href="#mtqgam-"></a>
 </h1></div>
 <!-- badges: start -->
-<p><img src="https://img.shields.io/badge/version-0.5.3-FFA70B.svg"><img src="https://img.shields.io/github/last-commit/dosc91/mtqgam"><!-- badges: end --></p>
+<p><img src="https://img.shields.io/badge/version-0.5.4-FFA70B.svg"><img src="https://img.shields.io/github/last-commit/dosc91/mtqgam"><!-- badges: end --></p>
 <p><code>mtqgam</code> offers functions</p>
 <ul>
 <li>to extract t values, and x and y coordinates of time-normalized mouse-tracking data</li>
@@ -76,68 +71,81 @@
 <li>to create multi-panel plots of parametric and smooth terms of QGAMs</li>
 <li>to summarize mqgam objects</li>
 </ul>
-<p>Check out the <a href="https://dosc91.github.io/mtqgam/reference/index.html">references</a> for more detailed information.</p>
+<p>Check out the <a href="https://dosc91.github.io/mtqgam/reference/index.html" class="external-link">references</a> for more detailed information.</p>
 </div>
-<div id="whats-new" class="section level1">
-<h1 class="hasAnchor">
-<a href="#whats-new" class="anchor"></a>What’s New</h1>
-<p>Please check the <a href="https://dosc91.github.io/mtqgam/news/index.html">changelog</a> for information on version history and function updates.</p>
+<div class="section level1">
+<h1 id="whats-new">What’s New<a class="anchor" aria-label="anchor" href="#whats-new"></a>
+</h1>
+<p>Please check the <a href="https://dosc91.github.io/mtqgam/news/index.html" class="external-link">changelog</a> for information on version history and function updates.</p>
 </div>
-<div id="how-to-install" class="section level1">
-<h1 class="hasAnchor">
-<a href="#how-to-install" class="anchor"></a>How to Install</h1>
+<div class="section level1">
+<h1 id="how-to-install">How to Install<a class="anchor" aria-label="anchor" href="#how-to-install"></a>
+</h1>
 <p>The preferred way to install this package is through devtools:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># if devtools has not been installed yet, please install it first</span>
-<span class="co"># install.packages("devtools")</span>
-
-<span class="co"># then, install the mtqgam package</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"dosc91/mtqgam"</span>, upgrade_dependencies <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># if devtools has not been installed yet, please install it first</span></span>
+<span><span class="co"># install.packages("devtools")</span></span>
+<span></span>
+<span><span class="co"># then, install the mtqgam package</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"dosc91/mtqgam"</span>, upgrade_dependencies <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>You will be asked to update dependencies during installation; usually, updates can be skipped. Once installation was successfull, there will be a warning message on the usage of <code>...</code>; this can be ignored.</p>
-<p>Please note that in order to use the plot functions of <code>mtqgam</code>, <code>ggplot2</code> is loaded automatically. Prior version 0.3, <code>ggplot2</code> had to be loaded via <code><a href="https://ggplot2.tidyverse.org">library(ggplot2)</a></code> first.</p>
+<p>Please note that in order to use the plot functions of <code>mtqgam</code>, <code>ggplot2</code> is loaded automatically. Prior version 0.3, <code>ggplot2</code> had to be loaded via <code><a href="https://ggplot2.tidyverse.org" class="external-link">library(ggplot2)</a></code> first.</p>
 </div>
-<div id="references" class="section level1">
-<h1 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h1>
+<div class="section level1">
+<h1 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h1>
 <p>Please cite the package as follows:</p>
-<p>Schmitz, Dominic. (2022). mtqgam: Mouse-Tracking Data in QGAMs. R package version 0.5.3. URL: <a href="https://github.com/dosc91/mtqgam" class="uri">https://github.com/dosc91/mtqgam</a></p>
+<p>Schmitz, Dominic. (2022). mtqgam: Mouse-Tracking Data in QGAMs. R package version 0.5.3. URL: <a href="https://github.com/dosc91/mtqgam" class="external-link uri">https://github.com/dosc91/mtqgam</a></p>
 <p>The following packages are made use of in the <code>mtqgam</code> package:</p>
-<p>Csárdi, G. (2021). cli: Helpers for Developing Command Line Interfaces. R package version 3.0.0. URL: <a href="https://CRAN.R-project.org/package=cli" class="uri">https://CRAN.R-project.org/package=cli</a></p>
-<p>Fasiolo M., Goude Y., Nedellec R., &amp; Wood S. N. (2017). Fast calibrated additive quantile regression. URL: <a href="https://arxiv.org/abs/1707.03307" class="uri">https://arxiv.org/abs/1707.03307</a></p>
-<p>Hester, J. (2020). glue: Interpreted String Literals. R package version 1.4.1. <a href="https://CRAN.R-project.org/package=glue" class="uri">https://CRAN.R-project.org/package=glue</a></p>
+<p>Csárdi, G. (2021). cli: Helpers for Developing Command Line Interfaces. R package version 3.0.0. URL: <a href="https://CRAN.R-project.org/package=cli" class="external-link uri">https://CRAN.R-project.org/package=cli</a></p>
+<p>Fasiolo M., Goude Y., Nedellec R., &amp; Wood S. N. (2017). Fast calibrated additive quantile regression. URL: <a href="https://arxiv.org/abs/1707.03307" class="external-link uri">https://arxiv.org/abs/1707.03307</a></p>
+<p>Hester, J. (2020). glue: Interpreted String Literals. R package version 1.4.1. <a href="https://CRAN.R-project.org/package=glue" class="external-link uri">https://CRAN.R-project.org/package=glue</a></p>
 <p>Kieslich, P. J., Henninger, F., Wulff, D. U., Haslbeck, J. M. B., &amp; Schulte-Mecklenbeck, M. (2019). Mouse-tracking: A practical guide to implementation and analysis. In M. Schulte-Mecklenbeck, A. Kühberger, &amp; J. G. Johnson (Eds.), A Handbook of Process Tracing Methods (pp. 111-130). New York, NY: Routledge.</p>
 <p>van Rij J, Wieling M, Baayen R, &amp; van Rijn H (2020). itsadug: Interpreting Time Series and Autocorrelated Data Using GAMMs. R package version 2.4.</p>
 <p>Wickham, H. (2016). ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York.</p>
-<p>Wickham, H. (2020). tidyr: Tidy Messy Data. R package version 1.1.2. <a href="https://CRAN.R-project.org/package=tidyr" class="uri">https://CRAN.R-project.org/package=tidyr</a></p>
+<p>Wickham, H. (2020). tidyr: Tidy Messy Data. R package version 1.1.2. <a href="https://CRAN.R-project.org/package=tidyr" class="external-link uri">https://CRAN.R-project.org/package=tidyr</a></p>
 </div>
 
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
-<div class="developers">
-<h2>Developers</h2>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li>Dominic Schmitz <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-0636-5249" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html#citation">Citing mtqgam</a></li>
 </ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Dominic Schmitz <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-0636-5249" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+</ul>
+</div>
+
+
 
   </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Dominic Schmitz.</p>
+  <p></p>
+<p>Developed by Dominic Schmitz.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -145,6 +153,8 @@
 
   
 
+
+  
 
   </body>
 </html>
